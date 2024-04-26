@@ -20,6 +20,7 @@ public class Interactable : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.E) && this.interatable)
         {
             this.SendMessage("interact");
+            this.lostFocus();
         }
     }
 
