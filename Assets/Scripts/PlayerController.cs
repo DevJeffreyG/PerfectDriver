@@ -5,10 +5,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private CharacterController characterController;
-    private Camera playerCamera;
+    public Camera playerCamera;
 
-    public float MovementSpeed = 5f;
-    public float JumpSpeed = 2f;
+    public float MovementSpeed = 6f;
+    public float JumpSpeed = 3f;
     public float Sensibility = 5f;
 
     private float CurrentYSpeed = 0f;
@@ -16,12 +16,11 @@ public class PlayerController : MonoBehaviour
     private float cameraRotationY = 0f;
     private bool isInCar = false;
 
-    private readonly float maxCameraYCar = 30f;
+    private readonly float maxCameraYCar = 40f;
 
     void Start()
     {
         characterController = GetComponent<CharacterController>();
-        playerCamera = gameObject.GetComponentInChildren<Camera>();
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -54,14 +53,17 @@ public class PlayerController : MonoBehaviour
         // Si está en el suelo
         if (this.characterController.isGrounded)
         {
+            this.CurrentYSpeed = 0f;
+
             // Si está saltando
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 this.CurrentYSpeed = this.JumpSpeed;
             }
         }
-
+        
         this.CurrentYSpeed -= 9.8f * Time.deltaTime;
+
         move.y = this.CurrentYSpeed;
 
         this.characterController.Move(this.MovementSpeed * Time.deltaTime * move);
@@ -83,5 +85,29 @@ public class PlayerController : MonoBehaviour
         }
 
         this.playerCamera.transform.localEulerAngles = new Vector3(this.cameraRotationX, this.cameraRotationY, 0);
+    }
+
+    public GameObject getCameraObject()
+    {
+        return this.playerCamera.gameObject;
+    }
+
+    public void toggleInsideCar()
+    {
+        this.isInCar = !this.isInCar;
+        this.toggleRaycast();
+        this.toggleCharacterController();
+    }
+
+    private void toggleRaycast()
+    {
+        CameraController raycast = this.GetComponentInChildren<CameraController>();
+
+        raycast.enabled = !raycast.enabled;
+    }
+
+    private void toggleCharacterController()
+    {
+        this.characterController.enabled = !this.characterController.enabled;
     }
 }
