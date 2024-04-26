@@ -28,14 +28,17 @@ public class CarController : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.Space))
         {
-            this.speed += this.speed > 0 ? this.power * 5f * -1 : this.power * 5f;
-
-            if(Mathf.Abs(this.speed) < 0.5f)
+            if (Mathf.Abs(this.speed) < 0.01f)
             {
+                Debug.Log("Freno de mano completado");
                 this.speed = 0;
                 this.rb.velocity = Vector3.zero;
+            } else
+            {
+                this.speed += this.speed > 0 ? Time.deltaTime * this.power * -1.5f : Time.deltaTime * this.power * 1.5f;
             }
-        } else
+        }
+        else
         {
             float inputX = Input.GetAxis("Horizontal");
             float inputY = Input.GetAxis("Vertical");
@@ -48,7 +51,7 @@ public class CarController : MonoBehaviour
             this.rb.AddForce(forward * speed, ForceMode.Acceleration);
         }
 
-        //Debug.Log(this.speed);
+        Debug.Log(this.speed);
         Debug.DrawLine(this.transform.position, (this.transform.position + this.transform.forward.normalized * 5f * speed), Color.red);
     }
 }
