@@ -116,4 +116,18 @@ public class PlayerController : MonoBehaviour
     {
         this.car = car;
     }
+
+    public void getOutOfCar()
+    {
+        GameObject pilotDoor = GameObject.FindGameObjectWithTag("CarEntrance");
+        Vector3 v = pilotDoor.transform.position + (pilotDoor.transform.right * -1).normalized * 7f; // La posicion a un lado de la puerta del piloto
+
+        this.transform.position = v;
+        this.transform.localScale = Vector3.one * 3f;
+
+        this.transform.SetParent(null, true);
+        this.car = null;
+
+        this.toggleInsideCar(); // Volver a darle el control al jugador
+    }
 }

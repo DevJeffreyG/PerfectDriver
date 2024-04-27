@@ -24,6 +24,7 @@ public class CarController : MonoBehaviour
     private float currentTurnAngle = 0f;
 
     private GameObject player = null;
+    private PlayerController playerController = null;
 
     void Start()
     {
@@ -41,15 +42,28 @@ public class CarController : MonoBehaviour
 
     private void keybindsManager()
     {
-
+        if (this.player == null) return;
+        
+        if(Input.GetKeyDown(KeyCode.F)) {
+            this.player = null;
+            this.playerController.getOutOfCar();
+            this.playerController = null;
+        }
     }
 
     private void movementManager()
     {
-        if (this.player == null) return;
-        this.currentAcceleration = this.acceleration * Input.GetAxis("Vertical");
+        float vInput = Input.GetAxis("Vertical");
+        float hInput = Input.GetAxis("Horizontal");
+        if (this.player == null)
+        {
+            vInput = 0f;
+            hInput = 0f;
+        }
 
-        if (Input.GetKey(KeyCode.Space))
+        this.currentAcceleration = this.acceleration * vInput;
+
+        if (Input.GetKey(KeyCode.Space) && this.player != null)
             this.currentBrakeForce = this.brakingForce;
         else
             this.currentBrakeForce = 0f;
@@ -63,7 +77,7 @@ public class CarController : MonoBehaviour
         this.rearLeft.brakeTorque = this.currentBrakeForce;
 
         // GIROS
-        this.currentTurnAngle = this.maxTurnAngle * Input.GetAxis("Horizontal");
+        this.currentTurnAngle = this.maxTurnAngle * hInput;
         this.frontLeft.steerAngle = this.currentTurnAngle;
         this.frontRight.steerAngle = this.currentTurnAngle;
 
@@ -89,5 +103,6 @@ public class CarController : MonoBehaviour
     public void setPlayer(GameObject player)
     {
         this.player = player;
+        this.playerController = this.player.GetComponent<PlayerController>();
     }
 }
