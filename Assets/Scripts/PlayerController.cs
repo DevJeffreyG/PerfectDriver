@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private float cameraRotationX = 0f;
     private float cameraRotationY = 0f;
     private bool isInCar = false;
+    private GameObject car = null;
 
     private readonly float maxCameraYCar = 40f;
 
@@ -109,5 +110,10 @@ public class PlayerController : MonoBehaviour
     private void toggleCharacterController()
     {
         this.characterController.enabled = !this.characterController.enabled;
+    }
+
+    public void setCar(GameObject car)
+    {
+        this.car = car;
     }
 }

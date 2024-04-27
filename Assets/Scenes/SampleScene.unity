@@ -1258,7 +1258,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1536998856987763}
   serializedVersion: 4
-  m_Mass: 1000
+  m_Mass: 1500
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -2028,6 +2028,7 @@ GameObject:
   - component: {fileID: 95679165569490333}
   - component: {fileID: 114944250853932365}
   - component: {fileID: 2142084746}
+  - component: {fileID: 114944250853932366}
   m_Layer: 0
   m_Name: Car
   m_TagString: UsableCar
@@ -5021,6 +5022,22 @@ MonoBehaviour:
   RLM: {fileID: 2100000, guid: 0a5d78c3e1415ac40a0e25976aaae858, type: 2}
   ILM: {fileID: 2100000, guid: ca15278988a972e498139a4b1b6b8ce9, type: 2}
   IRM: {fileID: 2100000, guid: c759fce7a5dd6dc4ea2792a428e94050, type: 2}
+--- !u!114 &114944250853932366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536998856987763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b85dd26424ceca49abc74e5ac0d369e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontRight: {fileID: 350831901}
+  frontLeft: {fileID: 210397665}
+  rearRight: {fileID: 90605647}
+  rearLeft: {fileID: 1519323206}
 --- !u!123 &123006810392187539
 LensFlare:
   m_ObjectHideFlags: 0

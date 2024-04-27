@@ -5,17 +5,17 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
-    private WheelCollider frontRight;
-    private WheelCollider frontLeft;
-    private WheelCollider rearRight;
-    private WheelCollider rearLeft;
+    [SerializeField] WheelCollider frontRight;
+    [SerializeField] WheelCollider frontLeft;
+    [SerializeField] WheelCollider rearRight;
+    [SerializeField] WheelCollider rearLeft;
 
     private Transform TFrontRight;
     private Transform TFrontLeft;
     private Transform TRearRight;
     private Transform TRearLeft;
 
-    private float acceleration = 1000f;
+    private float acceleration = 1500f;
     private float brakingForce = 2000f;
     private float maxTurnAngle = 30f;
 
@@ -23,26 +23,30 @@ public class CarController : MonoBehaviour
     private float currentBrakeForce = 0f;
     private float currentTurnAngle = 0f;
 
+    private GameObject player = null;
+
     void Start()
     {
-        this.frontRight = GameObject.Find("FrontRightCollider").GetComponent<WheelCollider>();
-        this.frontLeft = GameObject.Find("FrontLeftCollider").GetComponent<WheelCollider>();
-        this.rearRight = GameObject.Find("RearRightCollider").GetComponent<WheelCollider>();
-        this.rearLeft = GameObject.Find("RearLeftCollider").GetComponent<WheelCollider>();
-
-        this.TFrontRight = GameObject.Find("FR").transform;
-        this.TFrontLeft = GameObject.Find("FL").transform;
-        this.TRearRight = GameObject.Find("RR").transform;
-        this.TRearLeft = GameObject.Find("RL").transform;
+        this.TFrontRight = this.transform.Find("WheelMeshes/FR").transform;
+        this.TFrontLeft = this.transform.Find("WheelMeshes/FL").transform;
+        this.TRearRight = this.transform.Find("WheelMeshes/RR").transform;
+        this.TRearLeft = this.transform.Find("WheelMeshes/RL").transform;
     }
 
     private void FixedUpdate()
     {
         this.movementManager();
+        this.keybindsManager();
+    }
+
+    private void keybindsManager()
+    {
+
     }
 
     private void movementManager()
     {
+        if (this.player == null) return;
         this.currentAcceleration = this.acceleration * Input.GetAxis("Vertical");
 
         if (Input.GetKey(KeyCode.Space))
@@ -80,5 +84,10 @@ public class CarController : MonoBehaviour
         collider.GetWorldPose(out position, out rotation);
 
         trans.SetPositionAndRotation(position, rotation); 
+    }
+
+    public void setPlayer(GameObject player)
+    {
+        this.player = player;
     }
 }
