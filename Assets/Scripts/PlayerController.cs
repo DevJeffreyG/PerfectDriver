@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     private CharacterController characterController;
     public Camera playerCamera;
+    private GameObject pilotDoor = null;
 
     public float MovementSpeed = 6f;
     public float JumpSpeed = 3f;
@@ -115,11 +116,18 @@ public class PlayerController : MonoBehaviour
     public void setCar(GameObject car)
     {
         this.car = car;
+
+        foreach(Transform child in car.transform.Find("Body").transform)
+        {
+            if(child.CompareTag("CarEntrance"))
+            {
+                this.pilotDoor = child.gameObject;
+            }
+        }
     }
 
     public void getOutOfCar()
     {
-        GameObject pilotDoor = GameObject.FindGameObjectWithTag("CarEntrance");
         Vector3 v = pilotDoor.transform.position + (pilotDoor.transform.right * -1).normalized * 7f; // La posicion a un lado de la puerta del piloto
 
         this.transform.position = v;
@@ -127,6 +135,7 @@ public class PlayerController : MonoBehaviour
 
         this.transform.SetParent(null, true);
         this.car = null;
+        this.pilotDoor = null;
 
         this.toggleInsideCar(); // Volver a darle el control al jugador
     }

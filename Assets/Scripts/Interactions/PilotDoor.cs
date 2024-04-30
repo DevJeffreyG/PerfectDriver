@@ -6,11 +6,22 @@ public class PilotDoor : Interactable
 {
     public GameObject player;
     private PlayerController playerController;
+    private GameObject car;
+    private CarController carController;
 
     public override void Start()
     {
         base.Start(); // super()
         this.playerController = player.GetComponent<PlayerController>();
+        car = this.transform.gameObject; // Está en la puerta
+
+        do // Sube hasta el padre (Car)
+        {
+            car = car.transform.parent.gameObject;
+        } while (!car.CompareTag("UsableCar"));
+
+        carController = car.GetComponent<CarController>();
+
     }
 
     public void onFocus()
@@ -27,15 +38,7 @@ public class PilotDoor : Interactable
     {
         this.lostFocus();
         this.playerController.toggleInsideCar();
-        GameObject car = this.transform.gameObject;
-        CarController carController;
 
-        do
-        {
-            car = car.transform.parent.gameObject;
-        } while (!car.CompareTag("UsableCar"));
-
-        carController = car.GetComponent<CarController>();
         this.playerController.setCar(car);
         
         GameObject seat = car.transform.Find("PilotSeat").gameObject;
