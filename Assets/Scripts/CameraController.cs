@@ -22,7 +22,7 @@ public class CameraController : MonoBehaviour
                 if (hit.collider.gameObject.CompareTag("CarEntrance"))
                 {
                     this.obj = hit.collider.gameObject;
-                    this.obj.SendMessage("shine");
+                    this.obj.SendMessage("onFocus");
 
                     //Debug.Log("Viendo una puerta para entrar al auto");
                 }

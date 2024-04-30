@@ -2,18 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PilotDoor : MonoBehaviour
+public class PilotDoor : Interactable
 {
     public GameObject player;
     private PlayerController playerController;
 
-    private void Start()
+    public override void Start()
     {
+        base.Start(); // super()
         this.playerController = player.GetComponent<PlayerController>();
+    }
+
+    public void onFocus()
+    {
+        this.shine();
+    }
+
+    public void onLostFocus()
+    {
+        this.lostFocus();
     }
 
     public void interact()
     {
+        this.lostFocus();
         this.playerController.toggleInsideCar();
         GameObject car = this.transform.gameObject;
         CarController carController;

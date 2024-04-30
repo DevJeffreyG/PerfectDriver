@@ -857,6 +857,50 @@ Transform:
   - {fileID: 1407112127}
   m_Father: {fileID: 334052047}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!1 &609321483
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 609321484}
+  - component: {fileID: 609321485}
+  m_Layer: 0
+  m_Name: FPSManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &609321484
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609321483}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 8.382045, y: -0.28108373, z: -0.16589855}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &609321485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609321483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52e39df6412680f4794ac846beb5b9ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &681107560
 GameObject:
   m_ObjectHideFlags: 0
@@ -1542,18 +1586,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300020, guid: 9a91c5e887f917e419bfe9f63efe6056, type: 3}
---- !u!114 &1641593103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1043926535722111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5e0209386f57744d8d1faf1d9ef6dd4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1641593104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1722,7 +1754,6 @@ GameObject:
   - component: {fileID: 33514486733565095}
   - component: {fileID: 23706575691959479}
   - component: {fileID: 1641593102}
-  - component: {fileID: 1641593103}
   - component: {fileID: 1641593104}
   m_Layer: 3
   m_Name: Left_Door
@@ -5840,3 +5871,4 @@ SceneRoots:
   - {fileID: 291529662}
   - {fileID: 4735837205074423}
   - {fileID: 263216195}
+  - {fileID: 609321484}

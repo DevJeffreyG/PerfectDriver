@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-    private bool interatable = false;
+    private bool focused = false;
     private Outline outline;
 
-    void Start()
+    // https://learn.microsoft.com/es-es/dotnet/csharp/language-reference/keywords/virtual
+    public virtual void Start()
     {
         this.outline = this.AddComponent<Outline>();
         this.outline.OutlineWidth = 4f;
@@ -17,16 +18,15 @@ public class Interactable : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.E) && this.interatable)
+        if(Input.GetKeyDown(KeyCode.E) && this.focused)
         {
             this.SendMessage("interact");
-            this.lostFocus();
         }
     }
 
     public void shine()
     {
-        this.interatable = true;
+        this.focused = true;
         this.outline.enabled = true;
     }
 
@@ -34,6 +34,6 @@ public class Interactable : MonoBehaviour
     {
         Debug.Log("LOST FOCUS!");
         this.outline.enabled = false;
-        this.interatable = false;
+        this.focused = false;
     }
 }
