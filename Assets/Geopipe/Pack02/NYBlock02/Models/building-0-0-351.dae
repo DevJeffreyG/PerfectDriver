@@ -1,0 +1,365 @@
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1"><asset>
+	<contributor>
+	  <author>Geopipe</author>
+	  <authoring_tool>geopipe</authoring_tool>
+	  <source_data />
+	  <comments />
+	</contributor>
+	<created>2023-06-23T18:57:00</created>
+	<modified>2023-06-23T18:57:00</modified>
+	<unit name="meters" meter="1" />
+	<up_axis>Z_UP</up_axis>
+  </asset><library_images><image id="image0t10gpc625k2st" name="image0t10gpc625k2st">
+      <init_from>images/windowedFacade_plaster_2_diffuse_1024.png</init_from>
+    </image>
+    <image id="image1t10gpc625k2st" name="image1t10gpc625k2st">
+      <init_from>images/windowedFacade_plaster_2_specularGlossiness_1024.png</init_from>
+    </image>
+    <image id="image2t10gpc625k2st" name="image2t10gpc625k2st">
+      <init_from>images/windowedFacade_plaster_2_normal_1024.png</init_from>
+    </image>
+    <image id="image3t10gpc625k2st" name="image3t10gpc625k2st">
+      <init_from>images/facade_plaster_2_diffuse_1024.png</init_from>
+    </image>
+    <image id="image4t10gpc625k2st" name="image4t10gpc625k2st">
+      <init_from>images/facade_plaster_2_specularGlossiness_1024.png</init_from>
+    </image>
+    <image id="image5t10gpc625k2st" name="image5t10gpc625k2st">
+      <init_from>images/facade_plaster_2_normal_1024.png</init_from>
+    </image>
+    <image id="image6t10gpc62ci2st" name="image6t10gpc62ci2st">
+      <init_from>images/ortho10gpc62ci2.jpg</init_from>
+    </image>
+    </library_images><library_geometries><geometry name="geometryt10gpc62ci2st115_DaVinciHotel" id="geometryt10gpc62ci2st115_DaVinciHotel">
+      <mesh name="geometryt10gpc62ci2st115_DaVinciHotel-mesh" id="geometryt10gpc62ci2st115_DaVinciHotel-mesh">
+        <source id="mesht10gpc62ci2st115-positions" name="mesht10gpc62ci2st115-positions">
+          <float_array id="mesht10gpc62ci2st115-positions-array" count="54">251.7365 -210.9553 38.9711 254.9073 -205.1297 22.1281 241.2478 -230.2263 22.1281 254.9073 -205.1297 38.9711 241.2478 -230.2263 38.9711 242.0597 -231.6657 22.1281 244.8482 -233.1834 22.1281 244.8482 -233.1834 38.9711 242.0597 -231.6657 38.9711 246.6052 -232.8862 38.9711 246.4978 -233.0837 22.1281 260.1572 -207.9871 22.1281 246.4978 -233.0837 38.9711 260.1572 -207.9871 38.9711 259.3454 -206.5477 22.1281 256.5569 -205.0299 22.1281 256.5569 -205.0299 38.9711 259.3454 -206.5477 38.9711</float_array>
+          <technique_common>
+            <accessor source="#mesht10gpc62ci2st115-positions-array" count="18" stride="3">
+              <param name="X" type="float" />
+              <param name="Y" type="float" />
+              <param name="Z" type="float" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="mesht10gpc62ci2st115-normals" name="mesht10gpc62ci2st115-normals">
+          <float_array id="mesht10gpc62ci2st115-normals-array" count="12">-0.8783308 0.4780533 0 -0.4780533 -0.8783308 0 0.8783308 -0.4780533 0 0.4780533 0.8783308 0</float_array>
+          <technique_common>
+            <accessor source="#mesht10gpc62ci2st115-normals-array" count="4" stride="3">
+              <param name="X" type="float" />
+              <param name="Y" type="float" />
+              <param name="Z" type="float" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="mesht10gpc62ci2st115-map0" name="mesht10gpc62ci2st115-map0">
+          <float_array id="mesht10gpc62ci2st115-map0-array" count="24">2.08915 5 0 0 9 0 0 5 9 5 1 0 1 5 0.07081997 5 9 0 9 5 1 0 1 5</float_array>
+          <technique_common>
+            <accessor source="#mesht10gpc62ci2st115-map0-array" count="12" stride="2">
+              <param name="U" type="float" />
+              <param name="V" type="float" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="mesht10gpc62ci2st115-map1" name="mesht10gpc62ci2st115-map1">
+          <float_array id="mesht10gpc62ci2st115-map1-array" count="8">1.01575 1.3098 1.68504 1.0902 1.11811 1.23529 1.87402 1.51765</float_array>
+          <technique_common>
+            <accessor source="#mesht10gpc62ci2st115-map1-array" count="4" stride="2">
+              <param name="U" type="float" />
+              <param name="V" type="float" />
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="geometryt10gpc62ci2st115_DaVinciHotel-vertices" name="geometryt10gpc62ci2st115_DaVinciHotel-vertices">
+          <input semantic="POSITION" source="#mesht10gpc62ci2st115-positions" />
+        </vertices>
+        <triangles material="material9" count="10">
+          <input semantic="VERTEX" source="#geometryt10gpc62ci2st115_DaVinciHotel-vertices" offset="0" />
+          <input semantic="NORMAL" source="#mesht10gpc62ci2st115-normals" offset="1" />
+          <input semantic="TEXCOORD" source="#mesht10gpc62ci2st115-map0" offset="2" set="0" />
+          <input semantic="TEXCOORD" source="#mesht10gpc62ci2st115-map1" offset="3" set="1" />
+          <p>0 0 0 0 1 0 1 0 2 0 2 0 3 0 3 0 1 0 1 0 0 0 0 0 0 0 0 0 2 0 2 0 4 0 4 0 5 1 1 1 6 1 5 1 7 1 6 1 8 1 3 1 5 1 1 1 7 1 6 1 9 2 7 2 10 2 1 2 11 2 8 2 12 2 3 2 10 2 1 2 9 2 7 2 9 2 7 2 11 2 8 2 13 2 9 2 14 3 1 3 15 3 10 3 16 3 11 3 17 3 3 3 14 3 1 3 16 3 11 3</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry name="geometryt10gpc62ci2st116_DaVinciHotel" id="geometryt10gpc62ci2st116_DaVinciHotel">
+      <mesh name="geometryt10gpc62ci2st116_DaVinciHotel-mesh" id="geometryt10gpc62ci2st116_DaVinciHotel-mesh">
+        <source id="mesht10gpc62ci2st116-positions" name="mesht10gpc62ci2st116-positions">
+          <float_array id="mesht10gpc62ci2st116-positions-array" count="84">241.2478 -230.2263 22.1281 240.829 -230.9959 38.9711 241.2478 -230.2263 38.9711 254.9073 -205.1297 22.1281 251.7365 -210.9553 19.6711 240.829 -230.9959 19.6711 254.9073 -205.1297 38.9711 255.3261 -204.3601 38.9711 255.3261 -204.3601 19.6711 244.8482 -233.1834 22.1281 246.0789 -233.8533 38.9711 244.8482 -233.1834 38.9711 242.0597 -231.6657 22.1281 246.0789 -233.8533 19.6711 242.0597 -231.6657 38.9711 260.1572 -207.9871 22.1281 260.5761 -207.2175 38.9711 260.1572 -207.9871 38.9711 246.4978 -233.0837 22.1281 246.6052 -232.8862 19.6711 260.5761 -207.2175 19.6711 246.4978 -233.0837 38.9711 256.5569 -205.0299 22.1281 255.3261 -204.3601 38.9711 256.5569 -205.0299 38.9711 259.3454 -206.5477 22.1281 255.3261 -204.3601 19.6711 259.3454 -206.5477 38.9711</float_array>
+          <technique_common>
+            <accessor source="#mesht10gpc62ci2st116-positions-array" count="28" stride="3">
+              <param name="X" type="float" />
+              <param name="Y" type="float" />
+              <param name="Z" type="float" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="mesht10gpc62ci2st116-normals" name="mesht10gpc62ci2st116-normals">
+          <float_array id="mesht10gpc62ci2st116-normals-array" count="12">-0.8783308 0.4780533 0 -0.4780533 -0.8783308 0 0.8783308 -0.4780533 0 0.4780533 0.8783308 0</float_array>
+          <technique_common>
+            <accessor source="#mesht10gpc62ci2st116-normals-array" count="4" stride="3">
+              <param name="X" type="float" />
+              <param name="Y" type="float" />
+              <param name="Z" type="float" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="mesht10gpc62ci2st116-map0" name="mesht10gpc62ci2st116-map0">
+          <float_array id="mesht10gpc62ci2st116-map0-array" count="56">9 0 9.27599 5 9 5 0 0 2.08915 -0.72938 9.27599 -0.72938 0 5 -0.27599 5 -0.27599 -0.72938 1 0 1.44135 5 1 5 -0.44135 -0.72938 1.44135 -0.72938 -0.44135 5 9 0 9.27599 5 9 5 0.07081997 -0.72938 9.27599 -0.72938 -0.27599 5 -0.27599 -0.72938 1 0 1.44135 5 1 5 1.44135 -0.72938 -0.44135 5 -0.44135 -0.72938</float_array>
+          <technique_common>
+            <accessor source="#mesht10gpc62ci2st116-map0-array" count="28" stride="2">
+              <param name="U" type="float" />
+              <param name="V" type="float" />
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="geometryt10gpc62ci2st116_DaVinciHotel-vertices" name="geometryt10gpc62ci2st116_DaVinciHotel-vertices">
+          <input semantic="POSITION" source="#mesht10gpc62ci2st116-positions" />
+        </vertices>
+        <triangles material="material10" count="26">
+          <input semantic="VERTEX" source="#geometryt10gpc62ci2st116_DaVinciHotel-vertices" offset="0" />
+          <input semantic="NORMAL" source="#mesht10gpc62ci2st116-normals" offset="1" />
+          <input semantic="TEXCOORD" source="#mesht10gpc62ci2st116-map0" offset="2" set="0" />
+          <p>0 0 0 1 0 1 2 0 2 0 0 0 3 0 3 4 0 4 4 0 4 5 0 5 0 0 0 1 0 1 0 0 0 5 0 5 6 0 6 7 0 7 3 0 3 7 0 7 8 0 8 3 0 3 8 0 8 4 0 4 3 0 3 9 1 9 10 1 10 11 1 11 5 1 12 9 1 9 12 1 3 5 1 12 13 1 13 9 1 9 10 1 10 9 1 9 13 1 13 14 1 6 1 1 14 12 1 3 1 1 14 5 1 12 12 1 3 15 2 15 16 2 16 17 2 17 18 2 3 19 2 18 15 2 15 19 2 18 20 2 19 15 2 15 16 2 16 15 2 15 20 2 19 21 2 6 10 2 20 18 2 3 10 2 20 13 2 21 18 2 3 13 2 21 19 2 18 18 2 3 22 3 22 23 3 23 24 3 24 25 3 3 26 3 25 22 3 22 23 3 23 22 3 22 26 3 25 27 3 6 16 3 26 25 3 3 16 3 26 20 3 27 25 3 3 20 3 27 26 3 25 25 3 3</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    <geometry name="geometryt10gpc62ci2st117_DaVinciHotel" id="geometryt10gpc62ci2st117_DaVinciHotel">
+      <mesh name="geometryt10gpc62ci2st117_DaVinciHotel-mesh" id="geometryt10gpc62ci2st117_DaVinciHotel-mesh">
+        <source id="mesht10gpc62ci2st117-positions" name="mesht10gpc62ci2st117-positions">
+          <float_array id="mesht10gpc62ci2st117-positions-array" count="36">260.5761 -207.2175 19.6711 251.7365 -210.9553 19.6711 255.3261 -204.3601 19.6711 246.6052 -232.8862 19.6711 246.0789 -233.8533 19.6711 240.829 -230.9959 19.6711 246.6052 -232.8862 38.9711 251.7365 -210.9553 38.9711 240.829 -230.9959 38.9711 260.5761 -207.2175 38.9711 255.3261 -204.3601 38.9711 246.0789 -233.8533 38.9711</float_array>
+          <technique_common>
+            <accessor source="#mesht10gpc62ci2st117-positions-array" count="12" stride="3">
+              <param name="X" type="float" />
+              <param name="Y" type="float" />
+              <param name="Z" type="float" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="mesht10gpc62ci2st117-normals" name="mesht10gpc62ci2st117-normals">
+          <float_array id="mesht10gpc62ci2st117-normals-array" count="6">0 0 -1 0 0 1</float_array>
+          <technique_common>
+            <accessor source="#mesht10gpc62ci2st117-normals-array" count="2" stride="3">
+              <param name="X" type="float" />
+              <param name="Y" type="float" />
+              <param name="Z" type="float" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="mesht10gpc62ci2st117-map0" name="mesht10gpc62ci2st117-map0">
+          <float_array id="mesht10gpc62ci2st117-map0-array" count="12">0.29423 0.52045 0.30385 0.50254 0.2907 0.50993 0.34539 0.49169 0.34731 0.4906 0.34378 0.48009</float_array>
+          <technique_common>
+            <accessor source="#mesht10gpc62ci2st117-map0-array" count="6" stride="2">
+              <param name="U" type="float" />
+              <param name="V" type="float" />
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="geometryt10gpc62ci2st117_DaVinciHotel-vertices" name="geometryt10gpc62ci2st117_DaVinciHotel-vertices">
+          <input semantic="POSITION" source="#mesht10gpc62ci2st117-positions" />
+        </vertices>
+        <triangles material="material2" count="8">
+          <input semantic="VERTEX" source="#geometryt10gpc62ci2st117_DaVinciHotel-vertices" offset="0" />
+          <input semantic="NORMAL" source="#mesht10gpc62ci2st117-normals" offset="1" />
+          <input semantic="TEXCOORD" source="#mesht10gpc62ci2st117-map0" offset="2" set="0" />
+          <p>0 0 0 1 0 1 2 0 2 1 0 1 0 0 0 3 0 3 4 0 4 5 0 5 3 0 3 3 0 3 5 0 5 1 0 1 6 1 3 7 1 1 8 1 5 9 1 0 7 1 1 6 1 3 10 1 2 7 1 1 9 1 0 6 1 3 8 1 5 11 1 4</p>
+        </triangles>
+      </mesh>
+    </geometry>
+    </library_geometries><library_effects><effect id="effect0t10gpc625k2st" name="effect0t10gpc625k2st">
+      <profile_COMMON>
+        <newparam sid="effect0-image0-surfacet10gpc625k2st">
+          <surface type="2D">
+            <init_from>image0t10gpc625k2st</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="effect0-image0t10gpc625k2st">
+          <sampler2D>
+            <source>effect0-image0-surfacet10gpc625k2st</source>
+          </sampler2D>
+        </newparam>
+        <newparam sid="effect0-image1-surfacet10gpc625k2st">
+          <surface type="2D">
+            <init_from>image1t10gpc625k2st</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="effect0-image1t10gpc625k2st">
+          <sampler2D>
+            <source>effect0-image1-surfacet10gpc625k2st</source>
+          </sampler2D>
+        </newparam>
+        <newparam sid="effect0-image2-surfacet10gpc625k2st">
+          <surface type="2D">
+            <init_from>image2t10gpc625k2st</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="effect0-image2t10gpc625k2st">
+          <sampler2D>
+            <source>effect0-image2-surfacet10gpc625k2st</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <diffuse>
+              <texture texture="effect0-image0t10gpc625k2st" texcoord="UVSET0" />
+            </diffuse>
+            <specular>
+              <texture texture="effect0-image1t10gpc625k2st" texcoord="UVSET0" />
+            </specular>
+            <shininess>
+              <float>10</float>
+            </shininess>
+          </phong>
+          <extra>
+            <technique profile="FCOLLADA">
+              <bump>
+                <texture texture="effect0-image2t10gpc625k2st" texcoord="UVSET0" />
+              </bump>
+            </technique>
+          </extra>
+        </technique>
+        <extra>
+          <technique profile="GOOGLEEARTH">
+            <double_sided sid="double_sided">1</double_sided>
+          </technique>
+        </extra>
+      </profile_COMMON>
+    </effect>
+    <effect id="effect1t10gpc625k2st" name="effect1t10gpc625k2st">
+      <profile_COMMON>
+        <newparam sid="effect1-image3-surfacet10gpc625k2st">
+          <surface type="2D">
+            <init_from>image3t10gpc625k2st</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="effect1-image3t10gpc625k2st">
+          <sampler2D>
+            <source>effect1-image3-surfacet10gpc625k2st</source>
+          </sampler2D>
+        </newparam>
+        <newparam sid="effect1-image4-surfacet10gpc625k2st">
+          <surface type="2D">
+            <init_from>image4t10gpc625k2st</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="effect1-image4t10gpc625k2st">
+          <sampler2D>
+            <source>effect1-image4-surfacet10gpc625k2st</source>
+          </sampler2D>
+        </newparam>
+        <newparam sid="effect1-image5-surfacet10gpc625k2st">
+          <surface type="2D">
+            <init_from>image5t10gpc625k2st</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="effect1-image5t10gpc625k2st">
+          <sampler2D>
+            <source>effect1-image5-surfacet10gpc625k2st</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <diffuse>
+              <texture texture="effect1-image3t10gpc625k2st" texcoord="UVSET0" />
+            </diffuse>
+            <specular>
+              <texture texture="effect1-image4t10gpc625k2st" texcoord="UVSET0" />
+            </specular>
+            <shininess>
+              <float>10</float>
+            </shininess>
+          </phong>
+          <extra>
+            <technique profile="FCOLLADA">
+              <bump>
+                <texture texture="effect1-image5t10gpc625k2st" texcoord="UVSET0" />
+              </bump>
+            </technique>
+          </extra>
+        </technique>
+        <extra>
+          <technique profile="GOOGLEEARTH">
+            <double_sided sid="double_sided">1</double_sided>
+          </technique>
+        </extra>
+      </profile_COMMON>
+    </effect>
+    <effect id="effect2t10gpc62ci2st" name="effect2t10gpc62ci2st">
+      <profile_COMMON>
+        <newparam sid="effect2-image6-surfacet10gpc62ci2st">
+          <surface type="2D">
+            <init_from>image6t10gpc62ci2st</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="effect2-image6t10gpc62ci2st">
+          <sampler2D>
+            <source>effect2-image6-surfacet10gpc62ci2st</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color>0 0 0 1</color>
+            </emission>
+            <diffuse>
+              <texture texture="effect2-image6t10gpc62ci2st" texcoord="UVSET0" />
+            </diffuse>
+          </lambert>
+        </technique>
+        <extra>
+          <technique profile="GOOGLEEARTH">
+            <double_sided sid="double_sided">1</double_sided>
+          </technique>
+        </extra>
+      </profile_COMMON>
+    </effect>
+    </library_effects><library_materials><material id="material0t10gpc625k2st" name="material0t10gpc625k2st">
+      <instance_effect url="#effect0t10gpc625k2st" />
+    </material>
+    <material id="material1t10gpc625k2st" name="material1t10gpc625k2st">
+      <instance_effect url="#effect1t10gpc625k2st" />
+    </material>
+    <material id="material2t10gpc62ci2st" name="material2t10gpc62ci2st">
+      <instance_effect url="#effect2t10gpc62ci2st" />
+    </material>
+    </library_materials><library_nodes /><library_visual_scenes><visual_scene id="geopipe_scene"><node type="NODE" id="geopipeinode0z5HY-yx" name="geopipeinode0z5HY-yx">
+        <translate>503.374360 -637.448932 0.000000</translate><instance_geometry url="#geometryt10gpc62ci2st115_DaVinciHotel">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="material9" target="#material0t10gpc625k2st">
+                <bind_vertex_input semantic="UVSET0" input_semantic="TEXCOORD" input_set="0" />
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+        <instance_geometry url="#geometryt10gpc62ci2st116_DaVinciHotel">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="material10" target="#material1t10gpc625k2st">
+                <bind_vertex_input semantic="UVSET0" input_semantic="TEXCOORD" input_set="0" />
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+        <instance_geometry url="#geometryt10gpc62ci2st117_DaVinciHotel">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="material2" target="#material2t10gpc62ci2st">
+                <bind_vertex_input semantic="UVSET0" input_semantic="TEXCOORD" input_set="0" />
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+        <extra>
+          <technique profile="geopipe_Metadata">
+            <param type="string" name="addr:housenumber">244</param><param type="string" name="roof:shape">flat</param><param type="string" name="geopipe:identifier">w7dt9kUfjU/z2Zl9DjIYDg==</param><param type="string" name="addr:postcode">10019</param><param type="string" name="name">Da Vinci Hotel</param><param type="string" name="nycdoitt:bin">1024885</param><param type="string" name="phone">+1 212-489-4100</param><param type="string" name="ground_elevation">22.128096</param><param type="string" name="addr:street">West 56th Street</param><param type="string" name="roof:height">0.000000</param><param type="string" name="building">yes</param><param type="string" name="min_elevation">19.671097</param><param type="string" name="internet_access">wlan</param><param type="string" name="stars">3</param><param type="string" name="geopipe:floor_thickness">0.333728</param><param type="string" name="level_height">3.000000</param><param type="string" name="height">19.299999</param><param type="string" name="geopipe:window_props" /><param type="string" name="min_height">0.000000</param><param type="string" name="building:color">0xa7a76bff</param><param type="string" name="roof:color">0x000000ff</param><param type="string" name="building:material">plaster</param><param type="string" name="website">http://davincihotel.com</param><param type="string" name="geopipe:window_type">DoubleHung</param><param type="string" name="max_elevation">41.230377</param><param type="string" name="roof:material">metal</param><param type="string" name="wheelchair">no</param><param type="string" name="tourism">hotel</param>
+          </technique>
+        </extra>
+      </node>
+      </visual_scene></library_visual_scenes><scene><instance_visual_scene url="#geopipe_scene" /></scene><extra /></COLLADA>
