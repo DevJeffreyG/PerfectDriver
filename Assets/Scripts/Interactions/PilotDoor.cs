@@ -24,19 +24,9 @@ public class PilotDoor : Interactable
 
     }
 
-    public void onFocus()
-    {
-        this.shine();
-    }
-
-    public void onLostFocus()
-    {
-        this.lostFocus();
-    }
-
     public void interact()
     {
-        this.lostFocus();
+        this.onLostFocus();
         this.playerController.toggleInsideCar();
 
         this.playerController.setCar(car);

@@ -24,13 +24,13 @@ public class Interactable : MonoBehaviour
         }
     }
 
-    public void shine()
+    public void onFocus()
     {
         this.focused = true;
         this.outline.enabled = true;
     }
 
-    public void lostFocus()
+    public void onLostFocus()
     {
         Debug.Log("LOST FOCUS!");
         this.outline.enabled = false;

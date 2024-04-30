@@ -42,7 +42,7 @@ public class CameraController : MonoBehaviour
         {
             try
             {
-                this.obj.SendMessage("lostFocus");
+                this.obj.SendMessage("onLostFocus");
                 this.obj = null;
             }
             catch (Exception err)
