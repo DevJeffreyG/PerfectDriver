@@ -117,7 +117,7 @@ public class PlayerController : MonoBehaviour
     {
         this.car = car;
 
-        foreach(Transform child in car.transform.Find("Body").transform)
+        foreach(Transform child in this.car.transform.Find("Body").transform)
         {
             if(child.CompareTag("CarEntrance"))
             {
