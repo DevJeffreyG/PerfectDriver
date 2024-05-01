@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Interactable : MonoBehaviour
+public abstract class Interactable : MonoBehaviour
 {
     private bool focused = false;
     private Outline outline;
@@ -36,4 +36,6 @@ public class Interactable : MonoBehaviour
         this.outline.enabled = false;
         this.focused = false;
     }
+
+    public abstract void interact();
 }

@@ -25,7 +25,7 @@ public class PilotDoor : Interactable
 
     }
 
-    public void interact()
+    public override void interact()
     {
         this.onLostFocus();
         this.playerController.toggleInsideCar();
