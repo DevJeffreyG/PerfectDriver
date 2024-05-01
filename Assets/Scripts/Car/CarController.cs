@@ -20,7 +20,7 @@ public class CarController : MonoBehaviour
     private float motorTorque = 2000f; // Potencia del motor, es ineficiente si se sube mucho sin cambiar propiedades de ruedas
     private float brakeTorque = 2000f; // Cantidad de freno, que tan bien podria frenar
     
-    private float maxSpeed = 20f;
+    private float maxSpeed = 100f;
     private float turnRange = 30f;
     private float turnRangeAtMaxSpeed = 10f;
 
@@ -169,7 +169,7 @@ public class CarController : MonoBehaviour
         // Calcula la velocidad actual
         float forwardSpeed = Vector3.Dot(transform.forward, carPhysics.velocity);
 
-        //Debug.Log(forwardSpeed);
+        Debug.Log("Current speed: " + forwardSpeed);
 
         // Calcula que tan cerca está el carro de llegar a su velocidad máxima
         // Con un numero de 0 a 1

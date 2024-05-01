@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     public Camera playerCamera;
     private GameObject pilotDoor = null;
 
-    public float MovementSpeed = 6f;
+    public float MovementSpeed = 12f;
     public float JumpSpeed = 3f;
     public float Sensibility = 5f;
 
@@ -31,6 +31,11 @@ public class PlayerController : MonoBehaviour
     {
         this.cameraManager();
         this.movementManager();
+    }
+
+    public static GameObject getPlayerObject()
+    {
+        return GameObject.FindGameObjectWithTag("Player");
     }
 
     private void movementManager()

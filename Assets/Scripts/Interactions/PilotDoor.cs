@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PilotDoor : Interactable
 {
-    public GameObject player;
+    private GameObject player;
     private PlayerController playerController;
     private GameObject car;
     private CarController carController;
@@ -12,6 +12,7 @@ public class PilotDoor : Interactable
     public override void Start()
     {
         base.Start(); // super()
+        this.player = PlayerController.getPlayerObject();
         this.playerController = player.GetComponent<PlayerController>();
         car = this.transform.gameObject; // Está en la puerta
 
@@ -38,6 +39,8 @@ public class PilotDoor : Interactable
         this.player.transform.position = seat.transform.position;
 
         this.player.transform.SetParent(car.transform, true);
+        this.player.transform.localRotation = Quaternion.identity; // Rotación 0,0,0
+
         carController.setPlayer(this.player);
 
         //this.player.GetComponent<PlayerController>().getCharacterController().enabled = true;
