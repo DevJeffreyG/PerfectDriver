@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using System;
+using TMPro;
 using UnityEngine;
 
 public class CarController : MonoBehaviour
@@ -20,7 +19,7 @@ public class CarController : MonoBehaviour
     private float motorTorque = 2000f; // Potencia del motor, es ineficiente si se sube mucho sin cambiar propiedades de ruedas
     private float brakeTorque = 2000f; // Cantidad de freno, que tan bien podria frenar
     
-    private float maxSpeed = 100f;
+    private float maxSpeed = Conversor.MetersToUnits(20); // 20 m/s, 72 km/h
     private float turnRange = 30f;
     private float turnRangeAtMaxSpeed = 10f;
 
@@ -39,6 +38,10 @@ public class CarController : MonoBehaviour
     private WheelControl[] wheels;
     private bool handBrake = true;
     private bool engineStarted = false;
+
+    // MOSTRAR VELOCIDAD
+    private TMP_Text velocimetro;
+    private GameObject agujaVelocimetro;
 
     // LUCES
     private GameObject frontLights;
@@ -71,6 +74,8 @@ public class CarController : MonoBehaviour
         leftTimer = leftTimer2 = rightTimer = rightTimer2 = indicatorsEvery;
         carPhysics = GetComponent<Rigidbody>();
         steeringWheel = this.transform.Find("Body/SWheel").gameObject;
+        agujaVelocimetro = this.transform.Find("Tablero/AgujaAxis").gameObject;
+        velocimetro = this.transform.Find("Tablero/Speedometer").GetComponent<TMP_Text>();
 
         // Ajusta el centro de masa del carro para evitar que pasen cosas raras
         carPhysics.centerOfMass += Vector3.up * -1f;
@@ -177,11 +182,17 @@ public class CarController : MonoBehaviour
     {
         float vInput = Input.GetAxis("Vertical");
         float hInput = Input.GetAxis("Horizontal");
+        float speed = Mathf.Abs(carPhysics.velocity.magnitude);
+        if (speed < 0.0009f) speed = 0f;
+
+        // EN KILOMETROS POR HORA (3600s/1h)
+        String styledSpeed = Math.Round(Conversor.UnitsToKilometers(speed) * 3600, 1).ToString();
 
         if (this.player == null) return;
-        
+        velocimetro.text = styledSpeed;
+
         // Detectar actividad en el volante
-        if (!isIdle && hInput == 0 && Mathf.Abs(carPhysics.velocity.magnitude) > 0.1f)
+        if (!isIdle && hInput == 0 && speed > 0.1f)
         {
             idleCount += Time.deltaTime;
 
@@ -215,6 +226,9 @@ public class CarController : MonoBehaviour
         // Con un numero de 0 a 1
         float speedFactor = Mathf.InverseLerp(0, maxSpeed, forwardSpeed);
 
+        // Cambiar la aguja del velocimetro
+        agujaVelocimetro.transform.localEulerAngles = new Vector3(-90 + 180f * speedFactor, 0, 0);
+
         // Con ese numero se obtiene cuanto torque está disponible
         // Si speedFactor está en 1 (MAX VELOCIDAD) currentMotorTorque es 0, y viceversa
         float currentMotorTorque = Mathf.Lerp(motorTorque, 0, speedFactor);
@@ -226,6 +240,7 @@ public class CarController : MonoBehaviour
         // Revisar si el jugador está yendo a la misma dirección que el carro en ese instante
         bool isAccelerating = Mathf.Sign(vInput) == Mathf.Sign(forwardSpeed);
 
+        // Mover el volante
         steeringWheel.transform.localEulerAngles = new Vector3(steeringWheel.transform.localEulerAngles.x, steeringWheel.transform.localEulerAngles.y, hHistory * currentSteerRange);
 
         foreach (WheelControl wheel in wheels)
