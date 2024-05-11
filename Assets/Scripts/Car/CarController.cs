@@ -24,7 +24,15 @@ public class CarController : MonoBehaviour
     private float turnRange = 30f;
     private float turnRangeAtMaxSpeed = 10f;
 
+    // MANTENER EL ANGULO
+    private float steerForce = 5f;
+    private float hHistory = 0f;
+    private float idleCount = 0f;
+    private bool isIdle = false;
+    private bool idleAngle = false;
+
     private GameObject player = null;
+    private GameObject steeringWheel = null;
     private PlayerController playerController = null;
 
     private Rigidbody carPhysics;
@@ -62,6 +70,7 @@ public class CarController : MonoBehaviour
     {
         leftTimer = leftTimer2 = rightTimer = rightTimer2 = indicatorsEvery;
         carPhysics = GetComponent<Rigidbody>();
+        steeringWheel = this.transform.Find("Body/SWheel").gameObject;
 
         // Ajusta el centro de masa del carro para evitar que pasen cosas raras
         carPhysics.centerOfMass += Vector3.up * -1f;
@@ -157,6 +166,11 @@ public class CarController : MonoBehaviour
             this.DLeft = !this.DLeft;
             this.manageLight(LightType.DirectionalLeft, this.DLeft);
         }
+
+        if(Input.GetKey(KeyCode.CapsLock))
+        {
+            this.centerSteerWheel();
+        }
     }
 
     private void movementManager()
@@ -165,11 +179,37 @@ public class CarController : MonoBehaviour
         float hInput = Input.GetAxis("Horizontal");
 
         if (this.player == null) return;
+        
+        // Detectar actividad en el volante
+        if (!isIdle && hInput == 0 && Mathf.Abs(carPhysics.velocity.magnitude) > 0.1f)
+        {
+            idleCount += Time.deltaTime;
+
+            if(idleCount > 5f)
+            {
+                isIdle = true;
+            }
+        } else
+        {
+            idleAngle = false;
+            isIdle = false;
+            idleCount = 0f;
+        }
+
+        this.hHistory += hInput * Time.deltaTime * this.steerForce;
+
+        if (this.hHistory > 1f) hHistory = 1f;
+        else if (this.hHistory < -1f) hHistory = -1f;
+        
+        if(isIdle && !idleAngle)
+        {
+            this.idleAngle = this.centerSteerWheel();
+        }
 
         // Calcula la velocidad actual
         float forwardSpeed = Vector3.Dot(transform.forward, carPhysics.velocity);
 
-        Debug.Log("Current speed: " + forwardSpeed);
+        //Debug.Log("Current speed: " + forwardSpeed);
 
         // Calcula que tan cerca está el carro de llegar a su velocidad máxima
         // Con un numero de 0 a 1
@@ -186,11 +226,13 @@ public class CarController : MonoBehaviour
         // Revisar si el jugador está yendo a la misma dirección que el carro en ese instante
         bool isAccelerating = Mathf.Sign(vInput) == Mathf.Sign(forwardSpeed);
 
+        steeringWheel.transform.localEulerAngles = new Vector3(steeringWheel.transform.localEulerAngles.x, steeringWheel.transform.localEulerAngles.y, hHistory * currentSteerRange);
+
         foreach (WheelControl wheel in wheels)
         {
             if(wheel.canTurn())
             {
-                wheel.setTurnAngle(hInput * currentSteerRange);
+                wheel.setTurnAngle(hHistory * currentSteerRange);
             }
 
             if (handBrake) // Está el freno de mano puesto
@@ -355,6 +397,19 @@ public class CarController : MonoBehaviour
         }
     }
 
+    private bool centerSteerWheel()
+    {
+        this.hHistory += -1 * Mathf.Sign(this.hHistory) * Time.deltaTime;
+
+        if (Mathf.Abs(this.hHistory) <= 0.0009)
+        {
+            this.hHistory = 0f;
+            return true;
+        } else
+        {
+            return false;
+        }
+    }
     public void setPlayer(GameObject player)
     {
         this.player = player;
