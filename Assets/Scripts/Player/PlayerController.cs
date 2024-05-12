@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     private bool isInCar = false;
     private GameObject car = null;
 
-    private readonly float maxCameraYCar = 40f;
+    private readonly float maxCameraYCar = 60f;
 
     void Start()
     {

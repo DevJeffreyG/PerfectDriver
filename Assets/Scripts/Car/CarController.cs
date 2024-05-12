@@ -191,16 +191,18 @@ public class CarController : MonoBehaviour
         if (this.player == null) return;
         velocimetro.text = styledSpeed;
 
+        Debug.Log(idleCount);
+
         // Detectar actividad en el volante
         if (!isIdle && hInput == 0 && speed > 0.1f)
         {
             idleCount += Time.deltaTime;
 
-            if(idleCount > 5f)
+            if(idleCount > 2f)
             {
                 isIdle = true;
             }
-        } else
+        } else if(hInput != 0)
         {
             idleAngle = false;
             isIdle = false;
