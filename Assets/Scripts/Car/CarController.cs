@@ -16,14 +16,19 @@ public class CarController : MonoBehaviour
 
     private bool justEntered = true;
 
-    private float motorTorque = 2000f; // Potencia del motor, es ineficiente si se sube mucho sin cambiar propiedades de ruedas
-    private float brakeTorque = 2000f; // Cantidad de freno, que tan bien podria frenar
+    [SerializeField] private float maxMotorTorque = 4000f; // Potencia del motor, es ineficiente si se sube mucho sin cambiar propiedades de ruedas
+    private float brakeTorque = 5000f; // Cantidad de freno, que tan bien podria frenar
     
-    private float maxSpeed = Conversor.MetersToUnits(20); // 20 m/s, 72 km/h
+    [SerializeField] private float maxSpeed = Conversor.KilometersPerHourToUnitsSecond(150); // 20 m/s, 72 km/h
     private float turnRange = 30f;
     private float turnRangeAtMaxSpeed = 10f;
 
-    // MANTENER EL ANGULO
+    // CAJA DE CAMBIOS
+    private int motorGear = 1; // 0 reversa, 1, 2, 3, 4, 5
+    private int badTransmissions = 0;
+    private bool transmissionIsBroken = false; // Si la transmisión del carro está dañada
+
+    // MANTENER EL ANGULOs
     private float steerForce = 5f;
     private float hHistory = 0f;
     private float idleCount = 0f;
@@ -128,7 +133,7 @@ public class CarController : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.R))
         {
-            this.engineStarted = !this.engineStarted;
+            this.toggleEngine();
         }
 
         if(Input.GetKeyDown(KeyCode.Space))
@@ -176,22 +181,47 @@ public class CarController : MonoBehaviour
         {
             this.centerSteerWheel();
         }
+
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            this.motorGear--;
+
+            if(this.motorGear == 0 && Conversor.UnitsSecondToKilometersPerHour(getSpeed()) > 5f && this.engineStarted)
+            {
+                badTransmissions++;
+            }
+        } else if(Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            this.motorGear++;
+
+            if(this.motorGear == 1 && Conversor.UnitsSecondToKilometersPerHour(getSpeed()) > 5f && this.engineStarted)
+            {
+                badTransmissions++;
+            }
+        }
+
+        if(this.motorGear < 0) this.motorGear = 0;
+        if (this.motorGear > 5) this.motorGear = 5;
+
+        this.manageLight(LightType.Reverse, this.motorGear == 0);
+
+        if (badTransmissions >= 5)
+        {
+            transmissionIsBroken = true;
+        }
     }
 
     private void movementManager()
     {
         float vInput = Input.GetAxis("Vertical");
         float hInput = Input.GetAxis("Horizontal");
-        float speed = Mathf.Abs(carPhysics.velocity.magnitude);
-        if (speed < 0.0009f) speed = 0f;
+        float speed = this.getSpeed();
 
         // EN KILOMETROS POR HORA (3600s/1h)
-        String styledSpeed = Math.Round(Conversor.UnitsToKilometers(speed) * 3600, 1).ToString();
+        String styledSpeed = Math.Round(Conversor.UnitsSecondToKilometersPerHour(speed)).ToString();
 
         if (this.player == null) return;
         velocimetro.text = styledSpeed;
-
-        Debug.Log(idleCount);
 
         // Detectar actividad en el volante
         if (!isIdle && hInput == 0 && speed > 0.1f)
@@ -224,29 +254,36 @@ public class CarController : MonoBehaviour
 
         //Debug.Log("Current speed: " + forwardSpeed);
 
-        // Calcula que tan cerca está el carro de llegar a su velocidad máxima
+        // Calcula que tan cerca está el carro de llegar a su velocidad máxima (del cambio actual)
         // Con un numero de 0 a 1
-        float speedFactor = Mathf.InverseLerp(0, maxSpeed, forwardSpeed);
+        float currentMaxSpeed = maxSpeed * motorGear / 5;
+        if (currentMaxSpeed == 0) currentMaxSpeed = maxSpeed * 1 / 5;
+
+        float maxSpeedFactor = Mathf.InverseLerp(0, maxSpeed, forwardSpeed);
+        float speedFactor = Mathf.InverseLerp(0, currentMaxSpeed, forwardSpeed);
 
         // Cambiar la aguja del velocimetro
-        agujaVelocimetro.transform.localEulerAngles = new Vector3(-90 + 180f * speedFactor, 0, 0);
+        agujaVelocimetro.transform.localEulerAngles = new Vector3(-90 + 180f * maxSpeedFactor, 0, 0);
 
         // Con ese numero se obtiene cuanto torque está disponible
         // Si speedFactor está en 1 (MAX VELOCIDAD) currentMotorTorque es 0, y viceversa
-        float currentMotorTorque = Mathf.Lerp(motorTorque, 0, speedFactor);
+        float currentMotorTorque = Mathf.Lerp(maxMotorTorque, 0, speedFactor);
 
         // Calcular qué tanto puede girar
         // Porque el carro gira más a máxima velocidad
         float currentSteerRange = Mathf.Lerp(turnRange, turnRangeAtMaxSpeed, speedFactor);
 
-        // Revisar si el jugador está yendo a la misma dirección que el carro en ese instante
-        bool isAccelerating = Mathf.Sign(vInput) == Mathf.Sign(forwardSpeed);
+        // Revisar si el jugador está presionando el boton de acelerar
+        bool isAccelerating = Mathf.Sign(vInput) == 1 && !transmissionIsBroken;
 
         // Mover el volante
         steeringWheel.transform.localEulerAngles = new Vector3(steeringWheel.transform.localEulerAngles.x, steeringWheel.transform.localEulerAngles.y, hHistory * currentSteerRange);
 
         foreach (WheelControl wheel in wheels)
         {
+            Debug.Log("MOTOR: " + currentMotorTorque);
+            Debug.Log("SPEED: " + Conversor.UnitsSecondToKilometersPerHour(currentMaxSpeed));
+
             if(wheel.canTurn())
             {
                 wheel.setTurnAngle(hHistory * currentSteerRange);
@@ -255,14 +292,11 @@ public class CarController : MonoBehaviour
             if (handBrake) // Está el freno de mano puesto
             {
                 this.brake(wheel, 1f);
-
-                if(this.carPhysics.velocity.magnitude < 0.1f)
-                    this.manageLight(LightType.Reverse, false);
             }
             else if (vInput == 0) // El jugador no está ni acelerando ni desacelerando
             {
                 // Si no está cambiando de posicion el carro y está encendido
-                this.manageLight(LightType.Brake, this.engineStarted && this.carPhysics.velocity.magnitude < 0.1f);
+                this.manageLight(LightType.Brake, this.engineStarted && speed == 0);
                 
             } else if (isAccelerating) // El usuario está yendo a alguna direccion, y esta es la que ya tenia el carro
             {
@@ -276,7 +310,8 @@ public class CarController : MonoBehaviour
 
                 if (wheel.canAccelerate())
                 {
-                    wheel.accelerate(vInput * currentMotorTorque);
+                    int direction = this.motorGear == 0 ? -1 : 1; // Si está en reversa, el torque será negativo
+                    wheel.accelerate(vInput * currentMotorTorque * direction);
                 }
 
                 wheel.setBrakeTorque(0);
@@ -431,5 +466,22 @@ public class CarController : MonoBehaviour
     {
         this.player = player;
         this.playerController = this.player.GetComponent<PlayerController>();
+    }
+
+    private float getSpeed()
+    {
+        float speed = Mathf.Abs(this.carPhysics.velocity.magnitude);
+        if (speed < 0.0009f) speed = 0f;
+        return speed;
+    }
+
+    private void setEngineStarted(bool engine)
+    {
+        this.engineStarted = engine;
+    }
+
+    private void toggleEngine()
+    {
+        this.engineStarted = !this.engineStarted;
     }
 }

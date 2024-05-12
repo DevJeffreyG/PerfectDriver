@@ -29,6 +29,16 @@ public class Conversor : MonoBehaviour
         return MetersToUnits(KilometersToMeters(kilometers));
     }
 
+    public static float KilometersPerHourToUnitsSecond(float kmh)
+    {
+        return KilometersToUnits(kmh) / 3600;
+    }
+
+    public static float UnitsSecondToKilometersPerHour(float ups)
+    {
+        return UnitsToKilometers(ups) * 3600;
+    }
+
     public static float UnitsToKilometers(float units)
     {
         return MetersToKilometers(UnitsToMeters(units));
