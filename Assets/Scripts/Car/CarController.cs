@@ -48,8 +48,9 @@ public class CarController : MonoBehaviour
     private bool handbrakeIsUp = true;
     private bool engineStarted = false;
 
-    // MOSTRAR VELOCIDAD
+    // TABLERO
     private TMP_Text velocimetro;
+    private TMP_Text cambioActual;
     private GameObject agujaVelocimetro;
 
     // LUCES
@@ -85,6 +86,7 @@ public class CarController : MonoBehaviour
         steeringWheel = this.transform.Find("Body/SWheel").gameObject;
         agujaVelocimetro = this.transform.Find("Tablero/AgujaAxis").gameObject;
         velocimetro = this.transform.Find("Tablero/Speedometer").GetComponent<TMP_Text>();
+        cambioActual = this.transform.Find("Tablero/Gear").GetComponent<TMP_Text>();
 
         // Ajusta el centro de masa del carro para evitar que pasen cosas raras
         carPhysics.centerOfMass += Vector3.up * -1f;
@@ -124,8 +126,23 @@ public class CarController : MonoBehaviour
         this.movementManager();
         this.keybindsManager();
         this.indicatorsManager();
+        this.animationManager();
 
-        if(isAnimatingHB) animateHandbrake();
+    }
+
+    private void animationManager()
+    {
+        if (isAnimatingHB) animateHandbrake();
+
+        // ACTUALIZACIONES DEL TABLERO
+        // EN KILOMETROS POR HORA (3600s/1h)
+        String styledSpeed = Math.Round(Conversor.UnitsSecondToKilometersPerHour(getSpeed())).ToString();
+
+        velocimetro.text = styledSpeed;
+
+        // MOSTRAR EL CAMBIO ACTUAL
+        String gear = motorGear == 0 ? "R" : motorGear.ToString();
+        cambioActual.text = gear;
     }
 
     private void keybindsManager()
@@ -225,12 +242,8 @@ public class CarController : MonoBehaviour
         float vInput = Input.GetAxis("Vertical");
         float hInput = Input.GetAxis("Horizontal");
         float speed = this.getSpeed();
-
-        // EN KILOMETROS POR HORA (3600s/1h)
-        String styledSpeed = Math.Round(Conversor.UnitsSecondToKilometersPerHour(speed)).ToString();
-
+        
         if (this.player == null) return;
-        velocimetro.text = styledSpeed;
 
         // Detectar actividad en el volante
         if (!isIdle && hInput == 0 && speed > 0.1f)
