@@ -23,6 +23,10 @@ public class CarController : MonoBehaviour
     private float turnRange = 30f;
     private float turnRangeAtMaxSpeed = 10f;
 
+    // FRENO DE MANO
+    private bool isAnimatingHB = false;
+    private float timeHB = 0f;
+
     // CAJA DE CAMBIOS
     private int motorGear = 1; // 0 reversa, 1, 2, 3, 4, 5
     private int badTransmissions = 0;
@@ -41,7 +45,7 @@ public class CarController : MonoBehaviour
 
     private Rigidbody carPhysics;
     private WheelControl[] wheels;
-    private bool handBrake = true;
+    private bool handbrakeIsUp = true;
     private bool engineStarted = false;
 
     // MOSTRAR VELOCIDAD
@@ -120,6 +124,8 @@ public class CarController : MonoBehaviour
         this.movementManager();
         this.keybindsManager();
         this.indicatorsManager();
+
+        if(isAnimatingHB) animateHandbrake();
     }
 
     private void keybindsManager()
@@ -138,7 +144,10 @@ public class CarController : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            this.handBrake = !this.handBrake;
+            this.handbrakeIsUp = !this.handbrakeIsUp;
+
+            timeHB = 0f;
+            isAnimatingHB = true;
         }
         
         if(Input.GetKeyDown(KeyCode.F)) {
@@ -281,15 +290,15 @@ public class CarController : MonoBehaviour
 
         foreach (WheelControl wheel in wheels)
         {
-            Debug.Log("MOTOR: " + currentMotorTorque);
-            Debug.Log("SPEED: " + Conversor.UnitsSecondToKilometersPerHour(currentMaxSpeed));
+            //Debug.Log("MOTOR: " + currentMotorTorque);
+            //Debug.Log("SPEED: " + Conversor.UnitsSecondToKilometersPerHour(currentMaxSpeed));
 
             if(wheel.canTurn())
             {
                 wheel.setTurnAngle(hHistory * currentSteerRange);
             }
 
-            if (handBrake) // Está el freno de mano puesto
+            if (handbrakeIsUp) // Está el freno de mano puesto
             {
                 this.brake(wheel, 1f);
             }
@@ -483,5 +492,21 @@ public class CarController : MonoBehaviour
     private void toggleEngine()
     {
         this.engineStarted = !this.engineStarted;
+    }
+
+    private void animateHandbrake()
+    {
+        GameObject handbrake = this.transform.Find("Body/HandBrake").gameObject;
+        Vector3 objetive = this.handbrakeIsUp ? Vector3.zero : new Vector3(30, 0, 0);
+
+        Debug.Log(handbrake.transform.localEulerAngles);
+
+        handbrake.transform.localEulerAngles = Vector3.Lerp(handbrake.transform.localEulerAngles, objetive, timeHB);
+        timeHB += Time.deltaTime;
+
+        if(timeHB >= 1)
+        {
+            isAnimatingHB = false;
+        }
     }
 }
