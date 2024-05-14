@@ -23,6 +23,11 @@ public class CarController : MonoBehaviour
     private float turnRange = 30f;
     private float turnRangeAtMaxSpeed = 10f;
 
+    // SONIDOS
+    private Transform sounds;
+    LoopSound idleSound, drivingSound;
+    SingleSound engineStart, engineAcceleration;
+
     // FRENO DE MANO
     private bool isAnimatingHB = false;
     private float timeHB = 0f;
@@ -81,12 +86,28 @@ public class CarController : MonoBehaviour
 
     void Start()
     {
+        // Direccionales
         leftTimer = leftTimer2 = rightTimer = rightTimer2 = indicatorsEvery;
+        
+        // El componente de fisicas del carro
         carPhysics = GetComponent<Rigidbody>();
+        
+        // Cambios visuales
         steeringWheel = this.transform.Find("Body/SWheel").gameObject;
         agujaVelocimetro = this.transform.Find("Tablero/AgujaAxis").gameObject;
         velocimetro = this.transform.Find("Tablero/Speedometer").GetComponent<TMP_Text>();
         cambioActual = this.transform.Find("Tablero/Gear").GetComponent<TMP_Text>();
+        
+        // Sonidos
+        sounds = this.transform.Find("Sounds");
+
+        idleSound = sounds.Find("IdleSound").GetComponent<LoopSound>();
+        engineStart = sounds.Find("EngineStartSound").GetComponent<SingleSound>();
+        engineAcceleration = sounds.Find("EngineAcceleration").GetComponent<SingleSound>();
+        engineAcceleration.setMaxVol(0.75f);
+
+        drivingSound = sounds.Find("DrivingSound").GetComponent<LoopSound>();
+        drivingSound.setMaxVol(0.5f);
 
         // Ajusta el centro de masa del carro para evitar que pasen cosas raras
         carPhysics.centerOfMass += Vector3.up * -1f;
@@ -127,7 +148,6 @@ public class CarController : MonoBehaviour
         this.keybindsManager();
         this.indicatorsManager();
         this.animationManager();
-
     }
 
     private void animationManager()
@@ -157,9 +177,30 @@ public class CarController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.R))
         {
             this.toggleEngine();
+
+            if(this.engineStarted)
+            {
+                this.engineStart.Play(0, 7f);
+                this.idleSound.Play(3f);
+            } else
+            {
+                this.engineStart.Stop();
+                this.idleSound.Stop(0.15f, true);
+            }
         }
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.W))
+        {
+            this.engineAcceleration.ResetAudio();
+            this.engineAcceleration.Play(0.1f, 2);
+        }
+
+        if(Input.GetKeyUp(KeyCode.W))
+        {
+            this.engineAcceleration.Stop(0.1f, true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             this.handbrakeIsUp = !this.handbrakeIsUp;
 
@@ -244,6 +285,13 @@ public class CarController : MonoBehaviour
         float speed = this.getSpeed();
         
         if (this.player == null) return;
+        if(getSpeed() > 1)
+        {
+            this.drivingSound.Play(5f);
+        } else
+        {
+            this.drivingSound.Stop(0.25f, true);
+        }
 
         // Detectar actividad en el volante
         if (!isIdle && hInput == 0 && speed > 0.1f)
@@ -296,15 +344,15 @@ public class CarController : MonoBehaviour
         float currentSteerRange = Mathf.Lerp(turnRange, turnRangeAtMaxSpeed, speedFactor);
 
         // Revisar si el jugador está presionando el boton de acelerar
-        bool isAccelerating = Mathf.Sign(vInput) == 1 && !transmissionIsBroken;
+        bool isAccelerating = Mathf.Sign(vInput) == 1 && !transmissionIsBroken && vInput != 0;
 
         // Mover el volante
         steeringWheel.transform.localEulerAngles = new Vector3(steeringWheel.transform.localEulerAngles.x, steeringWheel.transform.localEulerAngles.y, hHistory * currentSteerRange);
 
         foreach (WheelControl wheel in wheels)
         {
-            //Debug.Log("MOTOR: " + currentMotorTorque);
-            //Debug.Log("SPEED: " + Conversor.UnitsSecondToKilometersPerHour(currentMaxSpeed));
+            //Debug.Log("MOTORTORQUEAVAILABLE: " + currentMotorTorque);
+            //Debug.Log("MAXSPEEDAVAILABLE: " + Conversor.UnitsSecondToKilometersPerHour(currentMaxSpeed));
 
             if(wheel.canTurn())
             {
@@ -493,7 +541,7 @@ public class CarController : MonoBehaviour
     private float getSpeed()
     {
         float speed = Mathf.Abs(this.carPhysics.velocity.magnitude);
-        if (speed < 0.0009f) speed = 0f;
+        if (speed < 0.009f) speed = 0f;
         return speed;
     }
 
