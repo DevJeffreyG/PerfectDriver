@@ -15,10 +15,10 @@ public class Keybinds
 
     private FileInfo file;
 
-    private KeyCode Accelerate; // Movimiento hacia adelante, hacer aceleracion de acuerdo al cambio del carro
-    private KeyCode Left; // Movimiento hacia la izquierda
-    private KeyCode Brake; // Movimiento hacia atrás, frenar el carro
-    private KeyCode Right; // Movimiento hacia la derecha
+    public KeyCode Accelerate; // Movimiento hacia adelante, hacer aceleracion de acuerdo al cambio del carro
+    public KeyCode Left; // Movimiento hacia la izquierda
+    public KeyCode Brake; // Movimiento hacia atrás, frenar el carro
+    public KeyCode Right; // Movimiento hacia la derecha
 
     public Keybinds(FileInfo file)
     {

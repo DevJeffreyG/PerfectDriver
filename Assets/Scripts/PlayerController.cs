@@ -19,10 +19,12 @@ public class PlayerController : MonoBehaviour
     private GameObject car = null;
 
     private readonly float maxCameraYCar = 40f;
+    private Keybinds keybinds;
 
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        this.keybinds = ProfileController.profile.getKeybinds();
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -54,8 +56,15 @@ public class PlayerController : MonoBehaviour
         forward.Normalize();
         right.Normalize();
 
-        // Obtiene el input de la forma horizontal y vertical (flechas, WASD)
-        Vector3 move = right * Input.GetAxis("Horizontal") + forward * Input.GetAxis("Vertical");
+        int axisX = 0;
+        if (Input.GetKey(keybinds.Right)) axisX = 1;
+        if (Input.GetKey(keybinds.Left)) axisX = -1;
+
+        int axisY = 0;
+        if (Input.GetKey(keybinds.Accelerate)) axisY = 1;
+        if (Input.GetKey(keybinds.Brake)) axisY = -1;
+
+        Vector3 move = right * axisX + forward * axisY;
 
         // Si está en el suelo
         if (this.characterController.isGrounded)

@@ -40,6 +40,11 @@ public class Profile
         return profileFile;
     }
 
+    public Keybinds getKeybinds()
+    {
+        return this.keybinds;
+    }
+
     public void saveFile()
     {
         StreamWriter writer = new StreamWriter(this.profileFile.FullName, false);
