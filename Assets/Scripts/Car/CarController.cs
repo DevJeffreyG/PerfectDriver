@@ -193,18 +193,18 @@ public class CarController : MonoBehaviour
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.W))
+        if(this.playerSettings.Down(Settings.SettingName.Accelerate))
         {
             this.engineAcceleration.ResetAudio();
             this.engineAcceleration.Play(0.1f, 2);
         }
 
-        if(Input.GetKeyUp(KeyCode.W))
+        if(this.playerSettings.Up(Settings.SettingName.Accelerate))
         {
             this.engineAcceleration.Stop(0.1f, true);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (this.playerSettings.Down(Settings.SettingName.ToggleHandbrake))
         {
             this.handbrakeIsUp = !this.handbrakeIsUp;
 
@@ -248,12 +248,12 @@ public class CarController : MonoBehaviour
             this.manageLight(LightType.DirectionalLeft, this.DLeft);
         }
 
-        if(Input.GetKey(KeyCode.CapsLock))
+        if(this.playerSettings.Holding(Settings.SettingName.StabilizeSteerWheel))
         {
             this.centerSteerWheel();
         }
 
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        if(this.playerSettings.Down(Settings.SettingName.GearDown))
         {
             this.motorGear--;
 
@@ -261,7 +261,7 @@ public class CarController : MonoBehaviour
             {
                 badTransmissions++;
             }
-        } else if(Input.GetKeyDown(KeyCode.Alpha2))
+        } else if(this.playerSettings.Down(Settings.SettingName.GearUp))
         {
             this.motorGear++;
 

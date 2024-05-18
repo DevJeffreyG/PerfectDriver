@@ -20,7 +20,10 @@ public class Settings
     public static readonly KeyCode D_TOGGLE_ENGINE = KeyCode.R;
     public static readonly KeyCode D_TOGGLE_HANDBRAKE = KeyCode.Space;
     public static readonly KeyCode D_TOGGLE_LIGHTS = KeyCode.C;
-    
+    public static readonly KeyCode D_GEAR_DOWN = KeyCode.Alpha1;
+    public static readonly KeyCode D_GEAR_UP = KeyCode.Alpha2;
+    public static readonly KeyCode D_STABILIZE_STEER_WHEEL = KeyCode.CapsLock;
+
     public static readonly float D_CAMERA_SENS = 5f;
     public static readonly int D_MAX_FPS = 120;
 
@@ -29,6 +32,7 @@ public class Settings
     public enum SettingName
     {
         Accelerate, Left, Brake, Right, Jump, Interact, DirectionalRight, DirectionalLeft, ToggleEngine, ToggleHandbrake, ToggleLights, CameraSens, MaxFPS,
+        GearUp, GearDown, StabilizeSteerWheel
     }
 
     private Dictionary<SettingName, object> defaultSettings, settingsMap;
@@ -61,10 +65,12 @@ public class Settings
         map.Add(SettingName.ToggleEngine, D_TOGGLE_ENGINE);
         map.Add(SettingName.ToggleHandbrake, D_TOGGLE_HANDBRAKE);
         map.Add(SettingName.ToggleLights, D_TOGGLE_LIGHTS);
+        map.Add(SettingName.GearDown, D_GEAR_DOWN);
+        map.Add(SettingName.GearUp, D_GEAR_UP);
+        map.Add(SettingName.StabilizeSteerWheel, D_STABILIZE_STEER_WHEEL);
 
         map.Add(SettingName.CameraSens, D_CAMERA_SENS);
         map.Add(SettingName.MaxFPS, D_MAX_FPS);
-
     }
 
     private void readFile()
