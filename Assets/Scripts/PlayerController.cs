@@ -19,10 +19,13 @@ public class PlayerController : MonoBehaviour
     private GameObject car = null;
 
     private readonly float maxCameraYCar = 40f;
+    private Settings playerSettings;
 
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        this.playerSettings = ProfileController.profile.getSettings();
+        this.Sensibility = (float) this.playerSettings.getSetting(Settings.SettingName.CameraSens);
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -54,8 +57,15 @@ public class PlayerController : MonoBehaviour
         forward.Normalize();
         right.Normalize();
 
-        // Obtiene el input de la forma horizontal y vertical (flechas, WASD)
-        Vector3 move = right * Input.GetAxis("Horizontal") + forward * Input.GetAxis("Vertical");
+        int axisX = 0;
+        if (this.playerSettings.Holding(Settings.SettingName.Right)) axisX = 1;
+        if (this.playerSettings.Holding(Settings.SettingName.Left)) axisX = -1;
+
+        int axisY = 0;
+        if (this.playerSettings.Holding(Settings.SettingName.Accelerate)) axisY = 1;
+        if (this.playerSettings.Holding(Settings.SettingName.Brake)) axisY = -1;
+
+        Vector3 move = right * axisX + forward * axisY;
 
         // Si está en el suelo
         if (this.characterController.isGrounded)
@@ -63,7 +73,7 @@ public class PlayerController : MonoBehaviour
             this.CurrentYSpeed = 0f;
 
             // Si está saltando
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (this.playerSettings.Down(Settings.SettingName.Jump))
             {
                 this.CurrentYSpeed = this.JumpSpeed;
             }

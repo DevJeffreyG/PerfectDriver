@@ -58,6 +58,8 @@ public class CarController : MonoBehaviour
     private float rightTimer;
     private float rightTimer2;
 
+    private Settings playerSettings;
+
     void Start()
     {
         leftTimer = leftTimer2 = rightTimer = rightTimer2 = indicatorsEvery;
@@ -94,6 +96,8 @@ public class CarController : MonoBehaviour
         RLM.DisableKeyword("_EMISSION");
         ILM.DisableKeyword("_EMISSION");
         IRM.DisableKeyword("_EMISSION");
+
+        this.playerSettings = ProfileController.profile.getSettings();
     }
 
     private void Update()
@@ -106,35 +110,35 @@ public class CarController : MonoBehaviour
     private void keybindsManager()
     {
         if (this.player == null) return;
-        if(this.justEntered && Input.GetKeyUp(KeyCode.E))
+        if(this.justEntered && this.playerSettings.Up(Settings.SettingName.Interact))
         {
             this.justEntered = false;
             return;
         }
 
-        if(Input.GetKeyDown(KeyCode.R))
+        if(this.playerSettings.Down(Settings.SettingName.ToggleEngine))
         {
             this.engineStarted = !this.engineStarted;
         }
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(this.playerSettings.Down(Settings.SettingName.ToggleHandbrake))
         {
             this.handBrake = !this.handBrake;
         }
         
-        if(Input.GetKeyDown(KeyCode.F)) {
+        if(this.playerSettings.Down(Settings.SettingName.Interact) && !this.justEntered) {
             this.player = null;
             this.justEntered = true; // Reiniciar al estado original, para luego evitar bugs con el intermitente derecho
             this.playerController.getOutOfCar();
             this.playerController = null;
         }
 
-        if (Input.GetKeyDown(KeyCode.C))
+        if (this.playerSettings.Down(Settings.SettingName.ToggleLights))
         {
             this.manageLight(LightType.Headlight, !this.Headlight);
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && !this.justEntered)
+        if (this.playerSettings.Down(Settings.SettingName.DirectionalRight) && !this.justEntered)
         {
             if (this.DLeft)
             { // Si el direccional izquierdo está encendido
@@ -146,7 +150,7 @@ public class CarController : MonoBehaviour
             this.manageLight(LightType.DirectionalRight, this.DRight);
         }
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (this.playerSettings.Down(Settings.SettingName.DirectionalLeft))
         {
             if (this.DRight)
             { // Si el direccional derecho está encendido
@@ -161,8 +165,8 @@ public class CarController : MonoBehaviour
 
     private void movementManager()
     {
-        float vInput = Input.GetAxis("Vertical");
-        float hInput = Input.GetAxis("Horizontal");
+        float vInput = this.playerSettings.Holding(Settings.SettingName.Accelerate) ? 1 : this.playerSettings.Holding(Settings.SettingName.Brake) ? -1 : 0;
+        float hInput = this.playerSettings.Holding(Settings.SettingName.Right) ? 1 : this.playerSettings.Holding(Settings.SettingName.Left) ? -1 : 0;
 
         if (this.player == null) return;
 
