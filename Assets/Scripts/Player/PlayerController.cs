@@ -19,10 +19,13 @@ public class PlayerController : MonoBehaviour
     private GameObject car = null;
 
     private readonly float maxCameraYCar = 60f;
+    private Settings playerSettings;
 
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        this.playerSettings = ProfileController.profile.getSettings();
+        this.Sensibility = (float) this.playerSettings.getSetting(Settings.SettingName.CameraSens);
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -40,30 +43,37 @@ public class PlayerController : MonoBehaviour
 
     private void movementManager()
     {
-        // Si está dentro de un carro el movimiento será distinto (el de un carro)
+        // Si estï¿½ dentro de un carro el movimiento serï¿½ distinto (el de un carro)
         if(this.isInCar) return;
 
-        // Toma el sentido hacia donde está viendo la cámara del jugador
+        // Toma el sentido hacia donde estï¿½ viendo la cï¿½mara del jugador
         Vector3 forward = this.playerCamera.transform.forward;
         Vector3 right = this.playerCamera.transform.right;
 
         forward.y = 0;
         right.y = 0;
 
-        // Con la norma del vector de la camara se puede mover en la dirección relativa a esta
+        // Con la norma del vector de la camara se puede mover en la direcciï¿½n relativa a esta
         forward.Normalize();
         right.Normalize();
 
-        // Obtiene el input de la forma horizontal y vertical (flechas, WASD)
-        Vector3 move = right * Input.GetAxis("Horizontal") + forward * Input.GetAxis("Vertical");
+        int axisX = 0;
+        if (this.playerSettings.Holding(Settings.SettingName.Right)) axisX = 1;
+        if (this.playerSettings.Holding(Settings.SettingName.Left)) axisX = -1;
 
-        // Si está en el suelo
+        int axisY = 0;
+        if (this.playerSettings.Holding(Settings.SettingName.Accelerate)) axisY = 1;
+        if (this.playerSettings.Holding(Settings.SettingName.Brake)) axisY = -1;
+
+        Vector3 move = right * axisX + forward * axisY;
+
+        // Si estï¿½ en el suelo
         if (this.characterController.isGrounded)
         {
             this.CurrentYSpeed = 0f;
 
-            // Si está saltando
-            if (Input.GetKeyDown(KeyCode.Space))
+            // Si estï¿½ saltando
+            if (this.playerSettings.Down(Settings.SettingName.Jump))
             {
                 this.CurrentYSpeed = this.JumpSpeed;
             }
@@ -84,7 +94,7 @@ public class PlayerController : MonoBehaviour
         if (this.cameraRotationX > 90f) this.cameraRotationX = 90f;
         else if (this.cameraRotationX < -90f) this.cameraRotationX = -90f;
 
-        // Si está dentro de un carro, no puede girar tanto por estar sentado
+        // Si estï¿½ dentro de un carro, no puede girar tanto por estar sentado
         if(this.isInCar)
         {
             if (this.cameraRotationY > this.maxCameraYCar) this.cameraRotationY = this.maxCameraYCar;

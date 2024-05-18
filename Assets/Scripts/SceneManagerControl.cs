@@ -1,17 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneManager : MonoBehaviour
+public class SceneManagerControl : MonoBehaviour
 {
-    public static SceneManager getManager()
+    public static SceneManagerControl getManager()
     {
-        return GameObject.Find("SceneManagerC").GetComponent<SceneManager>();
+        return GameObject.Find("SceneManagerC").GetComponent<SceneManagerControl>();
     }
 
     public void SceneSelector(string scene){
-        UnityEngine.SceneManagement.SceneManager.LoadScene(scene);
+        SceneManager.LoadScene(scene);
     }
 }
