@@ -19,12 +19,13 @@ public class PlayerController : MonoBehaviour
     private GameObject car = null;
 
     private readonly float maxCameraYCar = 40f;
-    private Keybinds keybinds;
+    private Settings playerSettings;
 
     void Start()
     {
         characterController = GetComponent<CharacterController>();
-        this.keybinds = ProfileController.profile.getKeybinds();
+        this.playerSettings = ProfileController.profile.getSettings();
+        this.Sensibility = (float) this.playerSettings.getSetting(Settings.SettingName.CameraSens);
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -57,12 +58,12 @@ public class PlayerController : MonoBehaviour
         right.Normalize();
 
         int axisX = 0;
-        if (Input.GetKey(keybinds.Right)) axisX = 1;
-        if (Input.GetKey(keybinds.Left)) axisX = -1;
+        if (this.playerSettings.Holding(Settings.SettingName.Right)) axisX = 1;
+        if (this.playerSettings.Holding(Settings.SettingName.Left)) axisX = -1;
 
         int axisY = 0;
-        if (Input.GetKey(keybinds.Accelerate)) axisY = 1;
-        if (Input.GetKey(keybinds.Brake)) axisY = -1;
+        if (this.playerSettings.Holding(Settings.SettingName.Accelerate)) axisY = 1;
+        if (this.playerSettings.Holding(Settings.SettingName.Brake)) axisY = -1;
 
         Vector3 move = right * axisX + forward * axisY;
 
@@ -72,7 +73,7 @@ public class PlayerController : MonoBehaviour
             this.CurrentYSpeed = 0f;
 
             // Si está saltando
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (this.playerSettings.Down(Settings.SettingName.Jump))
             {
                 this.CurrentYSpeed = this.JumpSpeed;
             }

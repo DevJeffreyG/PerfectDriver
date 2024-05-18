@@ -7,15 +7,15 @@ using UnityEngine;
 public class Profile
 {
     private FileInfo profileFile;
-    private FileInfo keybindsFile;
-    private Keybinds keybinds;
+    private FileInfo settingsFile;
+    private Settings settings;
    
     private String profileName;
 
     public Profile(String name)
     {
         String profilePath = Path.Combine(Paths.PROFILE_PATH, name + ".txt");
-        String keybindPath = Path.Combine(Paths.KEYBINDS_PATH, name + ".txt");
+        String keybindPath = Path.Combine(Paths.SETTINGS_PATH, name + ".txt");
 
         File.Create(profilePath).Close();
         File.Create(keybindPath).Close();
@@ -23,8 +23,8 @@ public class Profile
         this.profileFile = new FileInfo(profilePath);
 
         this.profileName = name;
-        this.keybindsFile = new FileInfo(keybindPath);
-        this.keybinds = new Keybinds(this.keybindsFile);
+        this.settingsFile = new FileInfo(keybindPath);
+        this.settings = new Settings(this.settingsFile);
 
         this.saveFile();
     }
@@ -40,16 +40,16 @@ public class Profile
         return profileFile;
     }
 
-    public Keybinds getKeybinds()
+    public Settings getSettings()
     {
-        return this.keybinds;
+        return this.settings;
     }
 
     public void saveFile()
     {
         StreamWriter writer = new StreamWriter(this.profileFile.FullName, false);
         writer.WriteLine(profileName);
-        writer.WriteLine(this.keybindsFile.FullName);
+        writer.WriteLine(this.settingsFile.FullName);
 
         writer.Close();
     }
@@ -59,8 +59,8 @@ public class Profile
         StreamReader reader = new StreamReader(this.profileFile.FullName);
 
         this.profileName = reader.ReadLine();
-        this.keybindsFile = new FileInfo(reader.ReadLine());
-        this.keybinds = new Keybinds(this.keybindsFile);
+        this.settingsFile = new FileInfo(reader.ReadLine());
+        this.settings = new Settings(this.settingsFile);
 
         reader.Close();
     }

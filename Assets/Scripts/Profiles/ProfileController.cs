@@ -11,7 +11,7 @@ public class ProfileController : MonoBehaviour
 
     void Start()
     {
-        Directory.CreateDirectory(Paths.KEYBINDS_PATH);
+        Directory.CreateDirectory(Paths.SETTINGS_PATH);
         DirectoryInfo dir = Directory.CreateDirectory(Paths.PROFILE_PATH);
 
         // Buscar todos los perfiles existentes en el path
@@ -37,7 +37,7 @@ public class ProfileController : MonoBehaviour
         if(profile == null)
         {
             profile = (Profile) this.profiles.getHead().getData();
-            Debug.Log("Era nulo, ya no");
+            Debug.Log("El perfil en uso ya no es nulo");
         }
     }
 }
