@@ -59,7 +59,7 @@ public class Settings
         map.Add(SettingName.DirectionalRight, D_DIRECTIONAL_RIGHT);
         map.Add(SettingName.DirectionalLeft, D_DIRECTIONAL_LEFT);
         map.Add(SettingName.ToggleEngine, D_TOGGLE_ENGINE);
-        map.Add(SettingName.ToggleHandbrake, D_TOGGLE_ENGINE);
+        map.Add(SettingName.ToggleHandbrake, D_TOGGLE_HANDBRAKE);
         map.Add(SettingName.ToggleLights, D_TOGGLE_LIGHTS);
 
         map.Add(SettingName.CameraSens, D_CAMERA_SENS);
@@ -79,26 +79,43 @@ public class Settings
             this.saveFile();
         } else
         {
-            foreach(var entry in settingsMap.ToList())
+            try
             {
-                Type type = entry.Value.GetType();
+                foreach (var entry in settingsMap.ToList())
+                {
+                    Type type = entry.Value.GetType();
 
-                if(type == typeof(KeyCode))
-                {
-                    settingsMap[entry.Key] = parseKeyCode(reader);
-                } else if(type == typeof(int))
-                {
-                    settingsMap[entry.Key] = parseInt(reader);
-                } else if(type == typeof(float))
-                {
-                    settingsMap[entry.Key] = parseFloat(reader);
-                } else
-                {
-                    settingsMap[entry.Key] = reader.ReadLine();
+                    if (type == typeof(KeyCode))
+                    {
+                        settingsMap[entry.Key] = parseKeyCode(reader);
+                    }
+                    else if (type == typeof(int))
+                    {
+                        settingsMap[entry.Key] = parseInt(reader);
+                    }
+                    else if (type == typeof(float))
+                    {
+                        settingsMap[entry.Key] = parseFloat(reader);
+                    }
+                    else
+                    {
+                        settingsMap[entry.Key] = reader.ReadLine();
+                    }
                 }
-            }
 
-            reader.Close();
+                reader.Close();
+
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Hubo un error inesperado");
+                Debug.Log(e);
+
+                reader.Close();
+
+                setDefaults();
+                saveFile();
+            }
         }
     }
 
