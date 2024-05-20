@@ -25,8 +25,8 @@ public class CarController : MonoBehaviour
 
     // SONIDOS
     private Transform sounds;
-    LoopSound idleSound, drivingSound;
-    SingleSound engineStart, engineAcceleration;
+    LoopSound idleSound, drivingSound, turnSignalLoop;
+    SingleSound engineStart, engineAcceleration, turnSignalToggle, doorClosing;
 
     // FRENO DE MANO
     private bool isAnimatingHB = false;
@@ -38,8 +38,10 @@ public class CarController : MonoBehaviour
     private bool transmissionIsBroken = false; // Si la transmisi�n del carro est� da�ada
 
     // MANTENER EL ANGULOs
-    private float steerForce = 5f;
-    private float hHistory = 0f;
+    private float steerForce = 100f;
+    private float maxSteerAngle = 450f;
+    private float hAngleMultiplier = 0f;
+    private float steerWheelLocalTurn = 0f;
     private float idleCount = 0f;
     private bool isIdle = false;
     private bool idleAngle = false;
@@ -54,9 +56,8 @@ public class CarController : MonoBehaviour
     private bool engineStarted = false;
 
     // TABLERO
-    private TMP_Text velocimetro;
-    private TMP_Text cambioActual;
-    private GameObject agujaVelocimetro;
+    private TMP_Text velocimetro, cambioActual;
+    private GameObject agujaVelocimetro, turnSignalLeft, turnSignalRight;
 
     // LUCES
     private GameObject frontLights;
@@ -78,7 +79,7 @@ public class CarController : MonoBehaviour
     private Material ILM;
     private Material IRM;
 
-    private readonly float indicatorsEvery = 0.5f;
+    private readonly float indicatorsEvery = 0.382f;
     private float leftTimer;
     private float leftTimer2;
     private float rightTimer;
@@ -99,17 +100,27 @@ public class CarController : MonoBehaviour
         agujaVelocimetro = this.transform.Find("Tablero/AgujaAxis").gameObject;
         velocimetro = this.transform.Find("Tablero/Speedometer").GetComponent<TMP_Text>();
         cambioActual = this.transform.Find("Tablero/Gear").GetComponent<TMP_Text>();
-        
+        turnSignalLeft = this.transform.Find("Tablero/TurnSignalLeft").gameObject;
+        turnSignalRight = this.transform.Find("Tablero/TurnSignalRight").gameObject;
+
+        turnSignalLeft.SetActive(false);
+        turnSignalRight.SetActive(false);
+
         // Sonidos
         sounds = this.transform.Find("Sounds");
 
         idleSound = sounds.Find("IdleSound").GetComponent<LoopSound>();
         engineStart = sounds.Find("EngineStartSound").GetComponent<SingleSound>();
+        doorClosing = sounds.Find("DoorClosing").GetComponent<SingleSound>();
         engineAcceleration = sounds.Find("EngineAcceleration").GetComponent<SingleSound>();
         engineAcceleration.setMaxVol(0.75f);
 
         drivingSound = sounds.Find("DrivingSound").GetComponent<LoopSound>();
         drivingSound.setMaxVol(0.5f);
+
+        turnSignalToggle = sounds.Find("TurnSignalToggle").GetComponent<SingleSound>();
+        turnSignalLoop = sounds.Find("TurnSignalLoop").GetComponent<LoopSound>();
+        turnSignalLoop.setMaxVol(0.5f);
 
         // Ajusta el centro de masa del carro para evitar que pasen cosas raras
         carPhysics.centerOfMass += Vector3.up * -1f;
@@ -150,7 +161,6 @@ public class CarController : MonoBehaviour
     {
         this.movementManager();
         this.keybindsManager();
-        this.indicatorsManager();
         this.animationManager();
     }
 
@@ -167,6 +177,71 @@ public class CarController : MonoBehaviour
         // MOSTRAR EL CAMBIO ACTUAL
         String gear = motorGear == 0 ? "R" : motorGear.ToString();
         cambioActual.text = gear;
+
+        // DIRECCIONALES
+
+        // SONIDOS
+        if(this.DLeft || this.DRight)
+        {
+            turnSignalLoop.Play();
+        } else
+        {
+            turnSignalLoop.Stop();
+            turnSignalLoop.ResetAudio();
+        }
+
+        // LUCES & TABLERO
+        if (this.DLeft)
+        {
+            turnSignalRight.SetActive(false);
+            if (leftTimer >= 0f)
+            {
+                this.manageLight(LightType.DirectionalLeft, true);
+                turnSignalLeft.SetActive(true);
+
+                leftTimer -= Time.deltaTime;
+                leftTimer2 = indicatorsEvery;
+            }
+            if (leftTimer <= 0f)
+            {
+                this.manageLight(LightType.DirectionalLeft, false);
+                turnSignalLeft.SetActive(false);
+
+                leftTimer2 -= Time.deltaTime;
+                if (leftTimer2 <= 0f) leftTimer = indicatorsEvery;
+            }
+        }
+        else
+        {
+            this.manageLight(LightType.DirectionalLeft, false);
+            turnSignalLeft.SetActive(false);
+        }
+
+        if (this.DRight)
+        {
+            turnSignalLeft.SetActive(false);
+            if (rightTimer >= 0f)
+            {
+                this.manageLight(LightType.DirectionalRight, true);
+                turnSignalRight.SetActive(true);
+                
+                rightTimer -= Time.deltaTime;
+                rightTimer2 = indicatorsEvery;
+            }
+            if (rightTimer <= 0f)
+            {
+                this.manageLight(LightType.DirectionalRight, false);
+                turnSignalRight.SetActive(false);
+                
+                rightTimer2 -= Time.deltaTime;
+                if (rightTimer2 <= 0f) rightTimer = indicatorsEvery;
+            }
+        }
+        else
+        {
+            this.manageLight(LightType.DirectionalRight, false);
+            turnSignalRight.SetActive(false);
+        }
     }
 
     private void keybindsManager()
@@ -174,6 +249,7 @@ public class CarController : MonoBehaviour
         if (this.player == null) return;
         if(this.justEntered && this.playerSettings.Up(Settings.SettingName.Interact))
         {
+            doorClosing.Play();
             this.justEntered = false;
             return;
         }
@@ -227,28 +303,30 @@ public class CarController : MonoBehaviour
         if (this.playerSettings.Down(Settings.SettingName.DirectionalRight) && !this.justEntered)
         {
             if (this.DLeft)
-            { // Si el direccional izquierdo est� encendido
+            { // Si el direccional izquierdo esta encendido
                 this.DLeft = !this.DLeft;
                 this.manageLight(LightType.DirectionalLeft, this.DLeft);
             }
 
             this.DRight = !this.DRight;
             this.manageLight(LightType.DirectionalRight, this.DRight);
+            this.turnSignalToggle.Play();
         }
 
         if (this.playerSettings.Down(Settings.SettingName.DirectionalLeft))
         {
             if (this.DRight)
-            { // Si el direccional derecho est� encendido
+            { // Si el direccional derecho esta encendido
                 this.DRight = !this.DRight;
                 this.manageLight(LightType.DirectionalRight, this.DRight);
             }
 
             this.DLeft = !this.DLeft;
             this.manageLight(LightType.DirectionalLeft, this.DLeft);
+            this.turnSignalToggle.Play();
         }
 
-        if(this.playerSettings.Holding(Settings.SettingName.StabilizeSteerWheel))
+        if (this.playerSettings.Holding(Settings.SettingName.StabilizeSteerWheel))
         {
             this.centerSteerWheel();
         }
@@ -313,15 +391,16 @@ public class CarController : MonoBehaviour
             idleCount = 0f;
         }
 
-        this.hHistory += hInput * Time.deltaTime * this.steerForce;
+        this.steerWheelLocalTurn += hInput * Time.deltaTime * this.steerForce;
+        if (this.steerWheelLocalTurn > maxSteerAngle) steerWheelLocalTurn = maxSteerAngle;
+        else if (this.steerWheelLocalTurn < -maxSteerAngle) steerWheelLocalTurn = -maxSteerAngle;
 
-        if (this.hHistory > 1f) hHistory = 1f;
-        else if (this.hHistory < -1f) hHistory = -1f;
-        
-        if(isIdle && !idleAngle)
+        if (isIdle && !idleAngle)
         {
             this.idleAngle = this.centerSteerWheel();
         }
+
+        this.hAngleMultiplier = Mathf.Lerp(0, Mathf.Sign(this.steerWheelLocalTurn), Mathf.Sign(this.steerWheelLocalTurn) * this.steerWheelLocalTurn / maxSteerAngle);              
 
         // Calcula la velocidad actual
         float forwardSpeed = Vector3.Dot(transform.forward, carPhysics.velocity);
@@ -351,7 +430,7 @@ public class CarController : MonoBehaviour
         bool isAccelerating = Mathf.Sign(vInput) == 1 && !transmissionIsBroken && vInput != 0;
 
         // Mover el volante
-        steeringWheel.transform.localEulerAngles = new Vector3(steeringWheel.transform.localEulerAngles.x, steeringWheel.transform.localEulerAngles.y, hHistory * currentSteerRange);
+        steeringWheel.transform.localEulerAngles = new Vector3(steeringWheel.transform.localEulerAngles.x, steeringWheel.transform.localEulerAngles.y, steerWheelLocalTurn);
 
         foreach (WheelControl wheel in wheels)
         {
@@ -360,7 +439,7 @@ public class CarController : MonoBehaviour
 
             if(wheel.canTurn())
             {
-                wheel.setTurnAngle(hHistory * currentSteerRange);
+                wheel.setTurnAngle(hAngleMultiplier * currentSteerRange);
             }
 
             if (handbrakeIsUp) // Est� el freno de mano puesto
@@ -400,44 +479,6 @@ public class CarController : MonoBehaviour
         Debug.DrawLine(this.transform.position + new Vector3(0, 5f, 0), this.transform.position + new Vector3(0, 5f, 0) + this.transform.forward.normalized * forwardSpeed, Color.green);
     }
 
-    private void indicatorsManager()
-    {
-        if (this.DLeft)
-        {
-            if (leftTimer >= 0f)
-            {
-                leftTimer -= Time.deltaTime;
-                this.manageLight(LightType.DirectionalLeft, true);
-                leftTimer2 = indicatorsEvery;
-            }
-            if (leftTimer <= 0f)
-            {
-                this.manageLight(LightType.DirectionalLeft, false);
-                leftTimer2 -= Time.deltaTime;
-                if (leftTimer2 <= 0f) leftTimer = indicatorsEvery;
-            }
-        }
-
-        if (this.DRight)
-        {
-            if (rightTimer >= 0f)
-            {
-                rightTimer -= Time.deltaTime;
-                this.manageLight(LightType.DirectionalRight, true);
-                rightTimer2 = indicatorsEvery;
-            }
-            if (rightTimer <= 0f)
-            {
-                this.manageLight(LightType.DirectionalRight, false);
-                rightTimer2 -= Time.deltaTime;
-                if (rightTimer2 <= 0f) rightTimer = indicatorsEvery;
-            }
-        }
-        else
-        {
-            this.manageLight(LightType.DirectionalRight, false);
-        }
-    }
     private void brake(WheelControl wheel, float input)
     {
         this.manageLight(LightType.Brake, true);
@@ -525,11 +566,11 @@ public class CarController : MonoBehaviour
 
     private bool centerSteerWheel()
     {
-        this.hHistory += -1 * Mathf.Sign(this.hHistory) * Time.deltaTime;
+        this.steerWheelLocalTurn += -1 * Mathf.Sign(this.steerWheelLocalTurn) * Time.deltaTime * steerForce;
 
-        if (Mathf.Abs(this.hHistory) <= 0.0009)
+        if (Mathf.Abs(this.steerWheelLocalTurn) <= 1.5f)
         {
-            this.hHistory = 0f;
+            this.steerWheelLocalTurn = 0f;
             return true;
         } else
         {

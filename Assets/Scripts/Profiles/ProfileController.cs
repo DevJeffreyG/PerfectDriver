@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class ProfileController : MonoBehaviour
 {
-    public static Profile profile;
+    public static Profile profile = new Profile("default");
     private DoubleCircularList profiles = new DoubleCircularList();
 
     void Start()

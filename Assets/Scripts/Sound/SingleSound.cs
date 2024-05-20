@@ -8,7 +8,9 @@ public class SingleSound : SoundManager
     public override void Play()
     {
         if (this.source.loop) throw new System.Exception("Source es un Loop");
-        if(!this.source.isPlaying)
+    
+        this.source.volume = this.maxVol;
+        if (!this.source.isPlaying)
             this.source.Play();
 
     }

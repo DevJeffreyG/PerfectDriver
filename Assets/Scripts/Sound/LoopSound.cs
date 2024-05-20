@@ -17,6 +17,7 @@ public class LoopSound : SoundManager
         if (!this.source.loop) throw new System.Exception("Source no es un Loop");
         if(!firstInit)
         {
+            this.source.volume = this.maxVol;
             this.firstInit = true;
             this.source.Play();
         } else if (!this.source.isPlaying)
