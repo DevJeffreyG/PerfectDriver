@@ -255,31 +255,10 @@ public class CarController : MonoBehaviour
             return;
         }
 
-        if(this.playerSettings.Holding(Settings.SettingName.FasterSteering))
-        {
-            this.actualSteerForce += this.defaultSteerForce * Time.deltaTime;
-            Debug.Log(this.actualSteerForce);
-        } else
-        {
-            this.actualSteerForce = this.defaultSteerForce;
-        }
-
         if(this.playerSettings.Down(Settings.SettingName.ToggleEngine))
-        {
             this.toggleEngine();
 
-            if(this.engineStarted)
-            {
-                this.engineStart.Play(0, 7f);
-                this.idleSound.Play(3f);
-            } else
-            {
-                this.engineStart.Stop();
-                this.idleSound.Stop(0.15f, true);
-            }
-        }
-
-        if(this.playerSettings.Down(Settings.SettingName.Accelerate))
+        if(this.playerSettings.Down(Settings.SettingName.Accelerate) && this.engineStarted)
         {
             this.engineAcceleration.ResetAudio();
             this.engineAcceleration.Play(0.1f, 2);
@@ -339,6 +318,16 @@ public class CarController : MonoBehaviour
         if (this.playerSettings.Holding(Settings.SettingName.StabilizeSteerWheel))
         {
             this.centerSteerWheel();
+        } else // Para que no sea posible darle los dos al tiempo
+        {
+            if (this.playerSettings.Holding(Settings.SettingName.FasterSteering))
+            {
+                this.increaseSteerForce();
+            }
+            else
+            {
+                this.actualSteerForce = this.defaultSteerForce;
+            }
         }
 
         if(this.playerSettings.Down(Settings.SettingName.GearDown))
@@ -466,6 +455,9 @@ public class CarController : MonoBehaviour
                 this.brake(wheel, 1f);
             } else if (isAccelerating) // El usuario est� yendo a alguna direccion, y esta es la que ya tenia el carro
             {
+                // Detectar que esté en primera al arrancar, o en reversa
+                if (speed == 0 && this.motorGear > 1 && vInput == 1 && this.engineStarted) this.toggleEngine();
+
                 if (!this.engineStarted) // Si no ha iniciado el carro no puede ACELERAR, FRENAR SI
                 {
                     vInput = 0f;
@@ -579,6 +571,7 @@ public class CarController : MonoBehaviour
 
     private bool centerSteerWheel()
     {
+        this.increaseSteerForce();
         this.steerWheelLocalTurn += -1 * Mathf.Sign(this.steerWheelLocalTurn) * Time.deltaTime * actualSteerForce;
 
         if (Mathf.Abs(this.steerWheelLocalTurn) <= 1.5f)
@@ -611,6 +604,23 @@ public class CarController : MonoBehaviour
     private void toggleEngine()
     {
         this.engineStarted = !this.engineStarted;
+        Debug.Log(this.engineStarted);
+
+        if (this.engineStarted)
+        {
+            this.engineStart.Play(0, 7f);
+            this.idleSound.Play(3f);
+        }
+        else
+        {
+            this.engineStart.Stop();
+            this.idleSound.Stop(0.15f, true);
+        }
+    }
+
+    private void increaseSteerForce()
+    {
+        this.actualSteerForce += this.defaultSteerForce * Time.deltaTime;
     }
 
     private void animateHandbrake()
