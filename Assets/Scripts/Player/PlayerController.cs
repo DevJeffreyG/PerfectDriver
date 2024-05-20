@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public float JumpSpeed = 3f;
     public float Sensibility = 5f;
 
+    private float defaultFOV;
     private float CurrentYSpeed = 0f;
     private float cameraRotationX = 0f;
     private float cameraRotationY = 0f;
@@ -26,6 +27,8 @@ public class PlayerController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         this.playerSettings = ProfileController.profile.getSettings();
         this.Sensibility = (float) this.playerSettings.getSetting(Settings.SettingName.CameraSens);
+
+        this.defaultFOV = this.playerCamera.fieldOfView;
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -88,6 +91,15 @@ public class PlayerController : MonoBehaviour
 
     private void cameraManager()
     {
+        if (this.playerSettings.Down(Settings.SettingName.Zoom))
+        {
+            StopAllCoroutines();
+            StartCoroutine(changeFOV(this.playerCamera.fieldOfView, 15, 0.15f));
+        } else if(this.playerSettings.Up(Settings.SettingName.Zoom))
+        {
+            StopAllCoroutines();
+            StartCoroutine(changeFOV(this.playerCamera.fieldOfView, this.defaultFOV, 0.1f));
+        }
         this.cameraRotationY += Input.GetAxis("Mouse X") * this.Sensibility;
         this.cameraRotationX += Input.GetAxis("Mouse Y") * -1 * this.Sensibility;
 
@@ -153,5 +165,18 @@ public class PlayerController : MonoBehaviour
         this.pilotDoor = null;
 
         this.toggleInsideCar(); // Volver a darle el control al jugador
+    }
+
+    protected IEnumerator changeFOV(float from, float to, float delay)
+    {
+        float timeElapsed = 0f;
+
+        while (timeElapsed < delay)
+        {
+            this.playerCamera.fieldOfView = Mathf.Lerp(from, to, timeElapsed / delay);
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
+        }
     }
 }
