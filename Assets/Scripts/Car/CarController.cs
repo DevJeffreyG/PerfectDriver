@@ -38,8 +38,9 @@ public class CarController : MonoBehaviour
     private bool transmissionIsBroken = false; // Si la transmisi�n del carro est� da�ada
 
     // MANTENER EL ANGULOs
-    private float steerForce = 100f;
-    private float maxSteerAngle = 450f;
+    private readonly float defaultSteerForce = 100f;
+    private readonly float maxSteerAngle = 450f;
+    private float actualSteerForce = 100f;
     private float hAngleMultiplier = 0f;
     private float steerWheelLocalTurn = 0f;
     private float idleCount = 0f;
@@ -254,6 +255,15 @@ public class CarController : MonoBehaviour
             return;
         }
 
+        if(this.playerSettings.Holding(Settings.SettingName.FasterSteering))
+        {
+            this.actualSteerForce += this.defaultSteerForce * Time.deltaTime;
+            Debug.Log(this.actualSteerForce);
+        } else
+        {
+            this.actualSteerForce = this.defaultSteerForce;
+        }
+
         if(this.playerSettings.Down(Settings.SettingName.ToggleEngine))
         {
             this.toggleEngine();
@@ -391,11 +401,14 @@ public class CarController : MonoBehaviour
             idleCount = 0f;
         }
 
-        this.steerWheelLocalTurn += hInput * Time.deltaTime * this.steerForce;
-        if (this.steerWheelLocalTurn > maxSteerAngle) steerWheelLocalTurn = maxSteerAngle;
-        else if (this.steerWheelLocalTurn < -maxSteerAngle) steerWheelLocalTurn = -maxSteerAngle;
+        this.steerWheelLocalTurn += hInput * Time.deltaTime * this.actualSteerForce;
+        if (Mathf.Abs(this.steerWheelLocalTurn) > maxSteerAngle)
+        {
+            this.actualSteerForce = this.defaultSteerForce;
+            steerWheelLocalTurn = Math.Sign(this.steerWheelLocalTurn) * maxSteerAngle;
+        }
 
-        if (isIdle && !idleAngle)
+            if (isIdle && !idleAngle)
         {
             this.idleAngle = this.centerSteerWheel();
         }
@@ -427,7 +440,7 @@ public class CarController : MonoBehaviour
         float currentSteerRange = Mathf.Lerp(turnRange, turnRangeAtMaxSpeed, speedFactor);
 
         // Revisar si el jugador est� presionando el boton de acelerar
-        bool isAccelerating = Mathf.Sign(vInput) == 1 && !transmissionIsBroken && vInput != 0;
+        bool isAccelerating = Mathf.Sign(vInput) == 1 && !transmissionIsBroken;// && vInput != 0;
 
         // Mover el volante
         steeringWheel.transform.localEulerAngles = new Vector3(steeringWheel.transform.localEulerAngles.x, steeringWheel.transform.localEulerAngles.y, steerWheelLocalTurn);
@@ -442,15 +455,15 @@ public class CarController : MonoBehaviour
                 wheel.setTurnAngle(hAngleMultiplier * currentSteerRange);
             }
 
-            if (handbrakeIsUp) // Est� el freno de mano puesto
-            {
-                this.brake(wheel, 1f);
-            }
-            else if (vInput == 0) // El jugador no est� ni acelerando ni desacelerando
+            if (vInput == 0) // El jugador no est� ni acelerando ni desacelerando
             {
                 // Si no est� cambiando de posicion el carro y est� encendido
                 this.manageLight(LightType.Brake, this.engineStarted && speed == 0);
-                
+            }
+
+            if (handbrakeIsUp) // Est� el freno de mano puesto
+            {
+                this.brake(wheel, 1f);
             } else if (isAccelerating) // El usuario est� yendo a alguna direccion, y esta es la que ya tenia el carro
             {
                 if (!this.engineStarted) // Si no ha iniciado el carro no puede ACELERAR, FRENAR SI
@@ -566,7 +579,7 @@ public class CarController : MonoBehaviour
 
     private bool centerSteerWheel()
     {
-        this.steerWheelLocalTurn += -1 * Mathf.Sign(this.steerWheelLocalTurn) * Time.deltaTime * steerForce;
+        this.steerWheelLocalTurn += -1 * Mathf.Sign(this.steerWheelLocalTurn) * Time.deltaTime * actualSteerForce;
 
         if (Mathf.Abs(this.steerWheelLocalTurn) <= 1.5f)
         {
@@ -605,7 +618,7 @@ public class CarController : MonoBehaviour
         GameObject handbrake = this.transform.Find("Body/HandBrake").gameObject;
         Vector3 objetive = this.handbrakeIsUp ? Vector3.zero : new Vector3(30, 0, 0);
 
-        Debug.Log(handbrake.transform.localEulerAngles);
+        //Debug.Log(handbrake.transform.localEulerAngles);
 
         handbrake.transform.localEulerAngles = Vector3.Lerp(handbrake.transform.localEulerAngles, objetive, timeHB);
         timeHB += Time.deltaTime;

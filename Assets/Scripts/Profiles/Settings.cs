@@ -23,6 +23,7 @@ public class Settings
     public static readonly KeyCode D_GEAR_DOWN = KeyCode.Alpha1;
     public static readonly KeyCode D_GEAR_UP = KeyCode.Alpha2;
     public static readonly KeyCode D_STABILIZE_STEER_WHEEL = KeyCode.CapsLock;
+    public static readonly KeyCode D_FASTER_STEER = KeyCode.LeftShift;
 
     public static readonly float D_CAMERA_SENS = 5f;
     public static readonly int D_MAX_FPS = 120;
@@ -32,7 +33,7 @@ public class Settings
     public enum SettingName
     {
         Accelerate, Left, Brake, Right, Jump, Interact, DirectionalRight, DirectionalLeft, ToggleEngine, ToggleHandbrake, ToggleLights, CameraSens, MaxFPS,
-        GearUp, GearDown, StabilizeSteerWheel
+        GearUp, GearDown, StabilizeSteerWheel, FasterSteering
     }
 
     private Dictionary<SettingName, object> defaultSettings, settingsMap;
@@ -68,6 +69,7 @@ public class Settings
         map.Add(SettingName.GearDown, D_GEAR_DOWN);
         map.Add(SettingName.GearUp, D_GEAR_UP);
         map.Add(SettingName.StabilizeSteerWheel, D_STABILIZE_STEER_WHEEL);
+        map.Add(SettingName.FasterSteering, D_FASTER_STEER);
 
         map.Add(SettingName.CameraSens, D_CAMERA_SENS);
         map.Add(SettingName.MaxFPS, D_MAX_FPS);
