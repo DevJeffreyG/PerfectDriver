@@ -8,7 +8,7 @@ public class WheelControl : MonoBehaviour
     public bool motorized; // Acelera/desacelera
 
     private WheelCollider wheelCollider;
-    public Transform wheelMesh;
+    [SerializeField] private Transform wheelMesh;
 
     private void Start()
     {
@@ -50,5 +50,10 @@ public class WheelControl : MonoBehaviour
     public bool isGrounded()
     {
         return this.wheelCollider.isGrounded;
+    }
+
+    public WheelCollider getCollider()
+    {
+        return wheelCollider;
     }
 }
