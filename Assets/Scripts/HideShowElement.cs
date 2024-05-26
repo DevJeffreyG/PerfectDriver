@@ -19,9 +19,11 @@ public class HideShowElement : MonoBehaviour
     public GameObject show;
     public GameObject hide1;
     public GameObject hide2;
+    public GameObject hide3;
     public void view (){
         show.SetActive(true);
         hide1.SetActive(false);
         hide2.SetActive(false);
+        hide3.SetActive(false);
     }
 }
