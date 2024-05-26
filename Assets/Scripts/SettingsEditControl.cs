@@ -24,6 +24,9 @@ public class SettingsEditControl : MonoBehaviour
             txt.text = storedKey.ToString();
             Settings.SettingName r = (Settings.SettingName) Enum.Parse(typeof(Settings.SettingName), control);
             ProfileController.profile.getSettings().setSetting(r, storedKey);
+            GameObject.Find("Canvas/PanelControles/PanelEspera").SetActive(false);
+        } else {
+            GameObject.Find("Canvas/PanelControles/PanelEspera").SetActive(true);
         }
     }
 
