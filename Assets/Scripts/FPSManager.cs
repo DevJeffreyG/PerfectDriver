@@ -26,7 +26,7 @@ public class FPSManager : MonoBehaviour
             }
             catch (NullReferenceException)
             {
-                Debug.Log("Aun no se carga el perfil, usando 120FPS");
+//                Debug.Log("Aun no se carga el perfil, usando 120FPS");
             }
         }
 
