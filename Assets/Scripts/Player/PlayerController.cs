@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     private bool isInCar = false;
     private GameObject car = null;
 
-    private readonly float maxCameraYCar = 60f;
+    private readonly float maxCameraYCar = 90f;
     private Settings playerSettings;
 
     void Start()
@@ -124,15 +124,21 @@ public class PlayerController : MonoBehaviour
     public void toggleInsideCar()
     {
         this.isInCar = !this.isInCar;
-        this.toggleRaycast();
+        this.toggleEntranceLayer();
         this.toggleCharacterController();
     }
 
-    private void toggleRaycast()
+    private void toggleEntranceLayer()
     {
-        CameraController raycast = this.GetComponentInChildren<CameraController>();
-
-        raycast.enabled = !raycast.enabled;
+        GameObject entrance = Helper.FindChildByTag(GameObject.FindGameObjectWithTag("UsableCar").transform.Find("Body").transform, "CarEntrance");
+        
+        if (this.isInCar)
+        {
+            entrance.layer = 0; // DEFAULT
+        } else
+        {
+            entrance.layer = 3; // INTERACTABLE LAYER
+        }
     }
 
     private void toggleCharacterController()
