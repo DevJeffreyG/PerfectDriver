@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Profile
@@ -35,14 +36,44 @@ public class Profile
         this.readFile();
     }
 
+    private Profile(String name, String pathProfile, String pathSettings)
+    {
+        this.profileName = name;
+        this.profileFile = new FileInfo(pathProfile);
+        this.settingsFile = new FileInfo(pathSettings);
+        
+        this.settings = new Settings(this.settingsFile);
+        this.saveFile();
+    }
+
     public FileInfo getFileInfo ()
     {
         return profileFile;
     }
 
+    public String getName()
+    {
+        return this.profileName;
+    }
+
     public Settings getSettings()
     {
         return this.settings;
+    }
+
+    public void changeName(String newName)
+    {
+        this.profileName = newName;
+        this.saveFile();
+    }
+
+    public Profile duplicate(String globalName)
+    {
+        File.Copy(this.profileFile.FullName, Path.Combine(Paths.PROFILE_PATH, globalName + ".txt"));
+        File.Copy(this.settingsFile.FullName, Path.Combine(Paths.SETTINGS_PATH, globalName + ".txt"));
+
+        Profile newProfile = new Profile(this.profileName + " copy", Path.Combine(Paths.PROFILE_PATH, globalName + ".txt"), Path.Combine(Paths.SETTINGS_PATH, globalName + ".txt"));
+        return newProfile;
     }
 
     public void saveFile()
