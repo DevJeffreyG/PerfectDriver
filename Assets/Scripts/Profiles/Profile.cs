@@ -13,10 +13,10 @@ public class Profile
    
     private String profileName;
 
-    public Profile(String name)
+    public Profile(String name, String fileName)
     {
-        String profilePath = Path.Combine(Paths.PROFILE_PATH, name + ".txt");
-        String keybindPath = Path.Combine(Paths.SETTINGS_PATH, name + ".txt");
+        String profilePath = Path.Combine(Paths.PROFILE_PATH, fileName + ".txt");
+        String keybindPath = Path.Combine(Paths.SETTINGS_PATH, fileName + ".txt");
 
         File.Create(profilePath).Close();
         File.Create(keybindPath).Close();
@@ -67,13 +67,19 @@ public class Profile
         this.saveFile();
     }
 
-    public Profile duplicate(String globalName)
+    public Profile duplicate(String fileName)
     {
-        File.Copy(this.profileFile.FullName, Path.Combine(Paths.PROFILE_PATH, globalName + ".txt"));
-        File.Copy(this.settingsFile.FullName, Path.Combine(Paths.SETTINGS_PATH, globalName + ".txt"));
+        File.Copy(this.profileFile.FullName, Path.Combine(Paths.PROFILE_PATH, fileName + ".txt"));
+        File.Copy(this.settingsFile.FullName, Path.Combine(Paths.SETTINGS_PATH, fileName + ".txt"));
 
-        Profile newProfile = new Profile(this.profileName + " copy", Path.Combine(Paths.PROFILE_PATH, globalName + ".txt"), Path.Combine(Paths.SETTINGS_PATH, globalName + ".txt"));
+        Profile newProfile = new Profile(this.profileName + " copy", Path.Combine(Paths.PROFILE_PATH, fileName + ".txt"), Path.Combine(Paths.SETTINGS_PATH, fileName + ".txt"));
         return newProfile;
+    }
+
+    public void delete()
+    {
+        File.Delete(this.profileFile.FullName);
+        File.Delete(this.settingsFile.FullName);
     }
 
     public void saveFile()
