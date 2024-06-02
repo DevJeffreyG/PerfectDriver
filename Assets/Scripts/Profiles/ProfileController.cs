@@ -61,7 +61,7 @@ public class ProfileController : MonoBehaviour
             Debug.Log("El perfil en uso ya no es nulo");
         } else
         {
-            Debug.Log(profile.getName());
+            //Debug.Log(profile.getName());
         }
     }
 
