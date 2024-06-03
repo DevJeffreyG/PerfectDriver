@@ -25,6 +25,8 @@ public class Settings
     public static readonly KeyCode D_GEAR_UP = KeyCode.Alpha2;
     public static readonly KeyCode D_STABILIZE_STEER_WHEEL = KeyCode.CapsLock;
     public static readonly KeyCode D_FASTER_STEER = KeyCode.LeftShift;
+    public static readonly KeyCode D_HORN = KeyCode.Mouse0;
+    public static readonly KeyCode D_EMERGENCY_LIGHTS = KeyCode.Backspace;
 
     public static readonly float D_CAMERA_SENS = 5f;
     public static readonly int D_MAX_FPS = 120;
@@ -34,7 +36,7 @@ public class Settings
     public enum SettingName
     {
         Accelerate, Left, Brake, Right, Jump, Interact, DirectionalRight, DirectionalLeft, ToggleEngine, ToggleHandbrake, ToggleLights, CameraSens, MaxFPS,
-        GearUp, GearDown, StabilizeSteerWheel, FasterSteering, Zoom
+        GearUp, GearDown, StabilizeSteerWheel, FasterSteering, Zoom, Horn, EmergencyLights
     }
 
     private Dictionary<SettingName, object> defaultSettings, settingsMap;
@@ -65,6 +67,7 @@ public class Settings
 
         map.Add(SettingName.DirectionalRight, D_DIRECTIONAL_RIGHT);
         map.Add(SettingName.DirectionalLeft, D_DIRECTIONAL_LEFT);
+        map.Add(SettingName.EmergencyLights, D_EMERGENCY_LIGHTS);
         map.Add(SettingName.ToggleEngine, D_TOGGLE_ENGINE);
         map.Add(SettingName.ToggleHandbrake, D_TOGGLE_HANDBRAKE);
         map.Add(SettingName.ToggleLights, D_TOGGLE_LIGHTS);
@@ -72,6 +75,7 @@ public class Settings
         map.Add(SettingName.GearUp, D_GEAR_UP);
         map.Add(SettingName.StabilizeSteerWheel, D_STABILIZE_STEER_WHEEL);
         map.Add(SettingName.FasterSteering, D_FASTER_STEER);
+        map.Add(SettingName.Horn, D_HORN);
 
         map.Add(SettingName.CameraSens, D_CAMERA_SENS);
         map.Add(SettingName.MaxFPS, D_MAX_FPS);

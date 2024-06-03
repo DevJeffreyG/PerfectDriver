@@ -11,7 +11,7 @@ public class CarController : MonoBehaviour
         FullBeam = 3,
         DirectionalRight = 4,
         DirectionalLeft = 5,
-        Reverse = 6,
+        Reverse = 6
     }
 
     private bool justEntered = true;
@@ -25,8 +25,8 @@ public class CarController : MonoBehaviour
 
     // SONIDOS
     private Transform sounds;
-    LoopSound idleSound, drivingSound, turnSignalLoop;
-    SingleSound engineStart, engineAcceleration, turnSignalToggle, doorClosing;
+    LoopSound idleSound, drivingSound, turnSignalLoop, claxonLoop;
+    SingleSound engineStart, engineAcceleration, turnSignalToggle, doorClosing, handbrakeUpSound, handbrakeDownSound;
 
     // FRENO DE MANO
     private bool isAnimatingHB = false;
@@ -72,6 +72,7 @@ public class CarController : MonoBehaviour
     private bool Brake = false;
     private bool DLeft = false;
     private bool DRight = false;
+    private bool EmergencyLights = false;
     private bool Reverse = false;
 
     private Material FLM;
@@ -85,13 +86,15 @@ public class CarController : MonoBehaviour
     private float leftTimer2;
     private float rightTimer;
     private float rightTimer2;
+    private float emergencyTimer;
+    private float emergencyTimer2;
 
     private Settings playerSettings;
 
     void Start()
     {
         // Direccionales
-        leftTimer = leftTimer2 = rightTimer = rightTimer2 = indicatorsEvery;
+        leftTimer = leftTimer2 = rightTimer = rightTimer2 = emergencyTimer = emergencyTimer2 = indicatorsEvery;
         
         // El componente de fisicas del carro
         carPhysics = GetComponent<Rigidbody>();
@@ -115,10 +118,13 @@ public class CarController : MonoBehaviour
         doorClosing = sounds.Find("DoorClosing").GetComponent<SingleSound>();
         engineAcceleration = sounds.Find("EngineAcceleration").GetComponent<SingleSound>();
         engineAcceleration.setMaxVol(0.75f);
+        handbrakeUpSound = sounds.Find("HandbrakeUp").GetComponent<SingleSound>();
+        handbrakeDownSound = sounds.Find("HandbrakeDown").GetComponent<SingleSound>();
 
         drivingSound = sounds.Find("DrivingSound").GetComponent<LoopSound>();
         drivingSound.setMaxVol(0.5f);
 
+        claxonLoop = sounds.Find("ClaxonLoop").GetComponent<LoopSound>();
         turnSignalToggle = sounds.Find("TurnSignalToggle").GetComponent<SingleSound>();
         turnSignalLoop = sounds.Find("TurnSignalLoop").GetComponent<LoopSound>();
         turnSignalLoop.setMaxVol(0.5f);
@@ -182,7 +188,7 @@ public class CarController : MonoBehaviour
         // DIRECCIONALES
 
         // SONIDOS
-        if(this.DLeft || this.DRight)
+        if(this.DLeft || this.DRight || this.EmergencyLights)
         {
             turnSignalLoop.Play();
         } else
@@ -192,6 +198,37 @@ public class CarController : MonoBehaviour
         }
 
         // LUCES & TABLERO
+        if(this.EmergencyLights)
+        {
+            Debug.Log("PIGN!");
+            if (emergencyTimer >= 0f)
+            {
+                this.manageLight(LightType.DirectionalLeft, true);
+                turnSignalLeft.SetActive(true);
+                this.manageLight(LightType.DirectionalRight, true);
+                turnSignalRight.SetActive(true);
+
+                emergencyTimer -= Time.deltaTime;
+                emergencyTimer2 = indicatorsEvery;
+            }
+            if (emergencyTimer <= 0f)
+            {
+                this.manageLight(LightType.DirectionalLeft, false);
+                turnSignalLeft.SetActive(false);
+                this.manageLight(LightType.DirectionalRight, false);
+                turnSignalRight.SetActive(false);
+
+                emergencyTimer2 -= Time.deltaTime;
+                if (emergencyTimer2 <= 0f) emergencyTimer = indicatorsEvery;
+            }
+        } else
+        {
+            this.manageLight(LightType.DirectionalLeft, false);
+            turnSignalLeft.SetActive(false);
+            this.manageLight(LightType.DirectionalRight, false);
+            turnSignalRight.SetActive(false);
+        }
+
         if (this.DLeft)
         {
             turnSignalRight.SetActive(false);
@@ -212,7 +249,7 @@ public class CarController : MonoBehaviour
                 if (leftTimer2 <= 0f) leftTimer = indicatorsEvery;
             }
         }
-        else
+        else if(!this.EmergencyLights)
         {
             this.manageLight(LightType.DirectionalLeft, false);
             turnSignalLeft.SetActive(false);
@@ -238,7 +275,7 @@ public class CarController : MonoBehaviour
                 if (rightTimer2 <= 0f) rightTimer = indicatorsEvery;
             }
         }
-        else
+        else if(!this.EmergencyLights)
         {
             this.manageLight(LightType.DirectionalRight, false);
             turnSignalRight.SetActive(false);
@@ -273,6 +310,16 @@ public class CarController : MonoBehaviour
         {
             this.handbrakeIsUp = !this.handbrakeIsUp;
 
+            if(handbrakeIsUp)
+            {
+                handbrakeUpSound.ResetAudio();
+                handbrakeUpSound.Play();
+            } else
+            {
+                handbrakeDownSound.ResetAudio();
+                handbrakeDownSound.Play();
+            }
+
             timeHB = 0f;
             isAnimatingHB = true;
         }
@@ -289,7 +336,7 @@ public class CarController : MonoBehaviour
             this.manageLight(LightType.Headlight, !this.Headlight);
         }
 
-        if (this.playerSettings.Down(Settings.SettingName.DirectionalRight) && !this.justEntered)
+        if (this.playerSettings.Down(Settings.SettingName.DirectionalRight) && !this.justEntered && !this.EmergencyLights)
         {
             if (this.DLeft)
             { // Si el direccional izquierdo esta encendido
@@ -302,7 +349,7 @@ public class CarController : MonoBehaviour
             this.turnSignalToggle.Play();
         }
 
-        if (this.playerSettings.Down(Settings.SettingName.DirectionalLeft))
+        if (this.playerSettings.Down(Settings.SettingName.DirectionalLeft) && !this.EmergencyLights)
         {
             if (this.DRight)
             { // Si el direccional derecho esta encendido
@@ -312,7 +359,28 @@ public class CarController : MonoBehaviour
 
             this.DLeft = !this.DLeft;
             this.manageLight(LightType.DirectionalLeft, this.DLeft);
+        }
+
+        if(this.playerSettings.Down(Settings.SettingName.EmergencyLights))
+        {
+            this.EmergencyLights = !this.EmergencyLights;
+
+            if(this.EmergencyLights)
+            {
+                this.DRight = false;
+                this.DLeft = false;
+            }
             this.turnSignalToggle.Play();
+        }
+
+        if (this.playerSettings.Down(Settings.SettingName.Horn))
+        {
+            this.claxonLoop.Play(.02f);
+        } else
+
+        if(this.playerSettings.Up(Settings.SettingName.Horn))
+        {
+            this.claxonLoop.Stop(.1f, true);
         }
 
         if (this.playerSettings.Holding(Settings.SettingName.StabilizeSteerWheel))
