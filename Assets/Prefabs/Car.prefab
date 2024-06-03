@@ -758,9 +758,10 @@ GameObject:
   - component: {fileID: 4981827598033165361}
   - component: {fileID: 5478352984004423773}
   - component: {fileID: 3510733321773110249}
+  - component: {fileID: 3535117920762951013}
   m_Layer: 1
   m_Name: Main
-  m_TagString: Untagged
+  m_TagString: UsableCar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -810,6 +811,27 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300038, guid: 9a91c5e887f917e419bfe9f63efe6056, type: 3}
+--- !u!65 &3535117920762951013
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539129358730158684}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.06, y: 0.01, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1563950246803153340
 GameObject:
   m_ObjectHideFlags: 0
@@ -933,7 +955,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c4e4113df7431843ace512518c11988, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
 --- !u!1 &1801821866471870211
 GameObject:
   m_ObjectHideFlags: 0
