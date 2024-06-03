@@ -16,4 +16,9 @@ public class Sign : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    void Start(){
+        ObjPoints = GameObject.FindGameObjectWithTag("PointManager");
+
+    }
+    
 }
