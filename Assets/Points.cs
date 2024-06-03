@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Points : MonoBehaviour
 {
     public int points;
-    public TextMesh textPoints;
+    public Text textPoints;
 
     private void Update()
     {
