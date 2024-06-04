@@ -664,6 +664,11 @@ public class CarController : MonoBehaviour
         return speed;
     }
 
+    public float getKmH()
+    {
+        return Conversor.UnitsSecondToKilometersPerHour(this.getSpeed());
+    }
+
     private void setEngineStarted(bool engine)
     {
         this.engineStarted = engine;
