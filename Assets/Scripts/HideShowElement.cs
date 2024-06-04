@@ -1,12 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class HideShowElement : MonoBehaviour
 {
-    /*// Start is called before the first frame update
-    void Start()
+    // Start is called before the first frame update
+    /*void Start()
     {
         
     }
@@ -16,6 +18,7 @@ public class HideShowElement : MonoBehaviour
     {
         
     }*/
+    private static ColaScript cola = new ColaScript();
     public GameObject show;
     public GameObject hide1;
     public GameObject hide2;
@@ -25,5 +28,10 @@ public class HideShowElement : MonoBehaviour
         hide1.SetActive(false);
         hide2.SetActive(false);
         hide3.SetActive(false);
+        
+        // cola
+
+        GameObject[] elements = {show, hide1, hide2, hide3};
+        cola.add(elements);
     }
 }
