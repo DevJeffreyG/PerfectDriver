@@ -15,6 +15,18 @@ public class DoubleCircularList
         return this.head == null;
     }
 
+    public void DeletePointer()
+    {
+        DoubleNode prev = this.pointer.getPrev();
+        DoubleNode next = this.pointer.getNext();
+
+        next.setPrev(prev);
+        prev.setNext(next);
+
+        this.pointer = next;
+        this.length--;
+    }
+
     public void Append(object data)
     {
         if(this.IsEmpty())

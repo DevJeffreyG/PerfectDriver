@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class ProfileController : MonoBehaviour
@@ -10,6 +11,7 @@ public class ProfileController : MonoBehaviour
     private FileInfo globalFile;
     private static Profile profile;
     private DoubleCircularList profiles = new DoubleCircularList();
+    private int LastId = 0;
 
     public static Profile getProfile()
     {
@@ -40,7 +42,8 @@ public class ProfileController : MonoBehaviour
             }
         } else
         {
-            this.profiles.Append(new Profile("0"));
+            this.profiles.Append(new Profile("Perfil predeterminado", this.LastId.ToString()));
+            this.LastId++;
         }
     }
 
@@ -54,6 +57,7 @@ public class ProfileController : MonoBehaviour
             try
             {
                 pos = Int32.Parse(reader.ReadLine());
+                this.LastId = Int32.Parse(reader.ReadLine());
             }
             catch (Exception e)
             {
@@ -71,13 +75,14 @@ public class ProfileController : MonoBehaviour
             Debug.Log("El perfil en uso ya no es nulo");
         } else
         {
-            //Debug.Log(profile.getName());
+            GameObject.Find("ProfileSelected").GetComponent<TMP_Text>().text = profile.getName();
         }
     }
 
     public void createProfile()
     {
-        this.profiles.Append(new Profile(this.profiles.Length().ToString()));
+        this.LastId++;
+        this.profiles.Append(new Profile("Perfil " + this.profiles.Length().ToString(), this.LastId.ToString()));
         this.profiles.PointTail();
 
         this.updateGlobalFile();
@@ -86,32 +91,46 @@ public class ProfileController : MonoBehaviour
 
     public void duplicateProfile()
     {
+        this.LastId++;
         Profile profileToDup = (Profile) this.profiles.getPointer().getData();
-        this.profiles.Append(profileToDup.duplicate(this.profiles.Length().ToString()));
+        this.profiles.Append(profileToDup.duplicate(this.LastId.ToString()));
         this.profiles.PointTail();
-        
+
         this.updateGlobalFile();
         profile = (Profile) this.profiles.getPointer().getData();
     }
 
     public void deleteProfile()
     {
-        // TODO
+        Debug.Log(this.profiles.Length());
+        if(this.profiles.Length() != 1)
+        {
+            Profile profileToDel = (Profile)this.profiles.getPointer().getData();
+            this.profiles.DeletePointer();
+            profileToDel.delete();
+
+            this.updateGlobalFile();
+            profile = (Profile)this.profiles.getPointer().getData();
+        } else
+        {
+            Debug.Log("No se elimin� el perfil, s�lo queda uno");
+        }
+        
     }
 
     public void nextProfile()
     {
         this.profiles.Next();
+
         this.updateGlobalFile();
-        
         profile = (Profile) this.profiles.getPointer().getData();
     }
 
     public void prevProfile()
     {
         this.profiles.Prev();
+
         this.updateGlobalFile();
-        
         profile = (Profile) this.profiles.getPointer().getData();
     }
 
@@ -131,6 +150,7 @@ public class ProfileController : MonoBehaviour
     {
         StreamWriter writer = new StreamWriter(Paths.GLOBALFILE_PATH, false);
         writer.WriteLine(this.profiles.Pos().ToString());
+        writer.WriteLine(this.LastId.ToString());
         writer.Close();
     }
 }
