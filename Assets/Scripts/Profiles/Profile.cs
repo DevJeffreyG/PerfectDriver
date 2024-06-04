@@ -18,8 +18,8 @@ public class Profile
         Directory.CreateDirectory(Paths.SETTINGS_PATH);
         DirectoryInfo dir = Directory.CreateDirectory(Paths.PROFILE_PATH);
 
-        String profilePath = Path.Combine(Paths.PROFILE_PATH, name + ".txt");
-        String keybindPath = Path.Combine(Paths.SETTINGS_PATH, name + ".txt");
+        String profilePath = Path.Combine(Paths.PROFILE_PATH, fileName + ".txt");
+        String keybindPath = Path.Combine(Paths.SETTINGS_PATH, fileName + ".txt");
 
         File.Create(profilePath).Close();
         File.Create(keybindPath).Close();
