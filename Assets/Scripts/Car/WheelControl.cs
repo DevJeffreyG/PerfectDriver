@@ -47,4 +47,8 @@ public class WheelControl : MonoBehaviour
         this.wheelCollider.motorTorque = torque;
     }
 
+    public bool isGrounded()
+    {
+        return this.wheelCollider.isGrounded;
+    }
 }
