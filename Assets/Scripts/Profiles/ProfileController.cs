@@ -8,10 +8,20 @@ using UnityEngine;
 public class ProfileController : MonoBehaviour
 {
     private FileInfo globalFile;
-    public static Profile profile;
+    private static Profile profile;
     private DoubleCircularList profiles = new DoubleCircularList();
 
-    void Start()
+    public static Profile getProfile()
+    {
+        if (profile == null)
+        {
+            profile = new Profile("0");
+        }        
+        
+        return profile;
+    }
+
+    void Awake()
     {
         Directory.CreateDirectory(Paths.SETTINGS_PATH);
         DirectoryInfo dir = Directory.CreateDirectory(Paths.PROFILE_PATH);

@@ -15,6 +15,9 @@ public class Profile
 
     public Profile(String name)
     {
+        Directory.CreateDirectory(Paths.SETTINGS_PATH);
+        DirectoryInfo dir = Directory.CreateDirectory(Paths.PROFILE_PATH);
+
         String profilePath = Path.Combine(Paths.PROFILE_PATH, name + ".txt");
         String keybindPath = Path.Combine(Paths.SETTINGS_PATH, name + ".txt");
 

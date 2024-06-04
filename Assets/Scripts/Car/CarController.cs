@@ -161,7 +161,7 @@ public class CarController : MonoBehaviour
         ILM.DisableKeyword("_EMISSION");
         IRM.DisableKeyword("_EMISSION");
 
-        this.playerSettings = ProfileController.profile.getSettings();
+        this.playerSettings = ProfileController.getProfile().getSettings();
     }
 
     private void Update()

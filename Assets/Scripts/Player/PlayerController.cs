@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         characterController = GetComponent<CharacterController>();
-        this.playerSettings = ProfileController.profile.getSettings();
+        this.playerSettings = ProfileController.getProfile().getSettings();
         this.Sensibility = (float) this.playerSettings.getSetting(Settings.SettingName.CameraSens);
 
         this.defaultFOV = this.playerCamera.fieldOfView;
@@ -130,7 +130,6 @@ public class PlayerController : MonoBehaviour
 
     private void toggleEntranceLayer()
     {
-        Debug.Log(GameObject.FindGameObjectWithTag("UsableCar").scene.name);
         GameObject entrance = Helper.FindChildByTag(GameObject.FindGameObjectWithTag("UsableCar").transform.Find("Body").transform, "CarEntrance");
         
         if (this.isInCar)

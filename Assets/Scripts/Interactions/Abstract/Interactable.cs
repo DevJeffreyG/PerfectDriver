@@ -15,7 +15,7 @@ public abstract class Interactable : MonoBehaviour, Focusable
         this.outline = this.AddComponent<Outline>();
         this.outline.OutlineWidth = 4f;
         this.outline.enabled = false;
-        this.playerSettings = ProfileController.profile.getSettings();
+        this.playerSettings = ProfileController.getProfile().getSettings();
     }
 
     void Update()
