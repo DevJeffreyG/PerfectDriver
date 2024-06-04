@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class TimerController : MonoBehaviour
 {
     [SerializeField] 
@@ -9,6 +10,8 @@ public class TimerController : MonoBehaviour
     private float TimeMax;
 
     private float CurrentTime;
+
+    private GameObject objectPoints;
 
     private bool TimeActivating = false;
 
@@ -20,6 +23,11 @@ public class TimerController : MonoBehaviour
         }
     }
 
+
+    private void Start()
+    {
+        objectPoints = GameObject.FindGameObjectWithTag("PointManager");
+    }
     private void ChangeTimer()
     {
        CurrentTime -= Time.deltaTime;
@@ -28,6 +36,8 @@ public class TimerController : MonoBehaviour
         {
             Debug.Log("Time run out");
             ChangeTempo(false);
+            objectPoints.GetComponent<Points>().points += 50;
+        
         }
     }
 
@@ -46,5 +56,7 @@ public class TimerController : MonoBehaviour
     public void DeactivateTempo()
     {
         ChangeTempo(false);
+        objectPoints.GetComponent<Points>().points -= 50;
+     
     }
 }
