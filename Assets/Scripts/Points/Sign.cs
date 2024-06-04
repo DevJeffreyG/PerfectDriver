@@ -10,7 +10,7 @@ public class Sign : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" || other.tag == "UsableCar")
+        if (other.CompareTag("Player") || other.CompareTag("CarCollider"))
         {
             ObjPoints.GetComponent<Points>().points += PointsReceived;
             Destroy(gameObject);

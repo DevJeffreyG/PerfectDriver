@@ -130,6 +130,7 @@ public class PlayerController : MonoBehaviour
 
     private void toggleEntranceLayer()
     {
+        Debug.Log(GameObject.FindGameObjectWithTag("UsableCar").scene.name);
         GameObject entrance = Helper.FindChildByTag(GameObject.FindGameObjectWithTag("UsableCar").transform.Find("Body").transform, "CarEntrance");
         
         if (this.isInCar)
