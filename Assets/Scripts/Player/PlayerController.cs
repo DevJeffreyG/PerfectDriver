@@ -12,17 +12,23 @@ public class PlayerController : MonoBehaviour
     public float JumpSpeed = 3f;
     public float Sensibility = 5f;
 
+    private float defaultFOV;
     private float CurrentYSpeed = 0f;
     private float cameraRotationX = 0f;
     private float cameraRotationY = 0f;
     private bool isInCar = false;
     private GameObject car = null;
 
-    private readonly float maxCameraYCar = 40f;
+    private readonly float maxCameraYCar = 90f;
+    private Settings playerSettings;
 
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        this.playerSettings = ProfileController.profile.getSettings();
+        this.Sensibility = (float) this.playerSettings.getSetting(Settings.SettingName.CameraSens);
+
+        this.defaultFOV = this.playerCamera.fieldOfView;
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -40,30 +46,37 @@ public class PlayerController : MonoBehaviour
 
     private void movementManager()
     {
-        // Si está dentro de un carro el movimiento será distinto (el de un carro)
+        // Si estï¿½ dentro de un carro el movimiento serï¿½ distinto (el de un carro)
         if(this.isInCar) return;
 
-        // Toma el sentido hacia donde está viendo la cámara del jugador
+        // Toma el sentido hacia donde estï¿½ viendo la cï¿½mara del jugador
         Vector3 forward = this.playerCamera.transform.forward;
         Vector3 right = this.playerCamera.transform.right;
 
         forward.y = 0;
         right.y = 0;
 
-        // Con la norma del vector de la camara se puede mover en la dirección relativa a esta
+        // Con la norma del vector de la camara se puede mover en la direcciï¿½n relativa a esta
         forward.Normalize();
         right.Normalize();
 
-        // Obtiene el input de la forma horizontal y vertical (flechas, WASD)
-        Vector3 move = right * Input.GetAxis("Horizontal") + forward * Input.GetAxis("Vertical");
+        int axisX = 0;
+        if (this.playerSettings.Holding(Settings.SettingName.Right)) axisX = 1;
+        if (this.playerSettings.Holding(Settings.SettingName.Left)) axisX = -1;
 
-        // Si está en el suelo
+        int axisY = 0;
+        if (this.playerSettings.Holding(Settings.SettingName.Accelerate)) axisY = 1;
+        if (this.playerSettings.Holding(Settings.SettingName.Brake)) axisY = -1;
+
+        Vector3 move = right * axisX + forward * axisY;
+
+        // Si estï¿½ en el suelo
         if (this.characterController.isGrounded)
         {
             this.CurrentYSpeed = 0f;
 
-            // Si está saltando
-            if (Input.GetKeyDown(KeyCode.Space))
+            // Si estï¿½ saltando
+            if (this.playerSettings.Down(Settings.SettingName.Jump))
             {
                 this.CurrentYSpeed = this.JumpSpeed;
             }
@@ -78,13 +91,22 @@ public class PlayerController : MonoBehaviour
 
     private void cameraManager()
     {
+        if (this.playerSettings.Down(Settings.SettingName.Zoom))
+        {
+            StopAllCoroutines();
+            StartCoroutine(changeFOV(this.playerCamera.fieldOfView, 15, 0.15f));
+        } else if(this.playerSettings.Up(Settings.SettingName.Zoom))
+        {
+            StopAllCoroutines();
+            StartCoroutine(changeFOV(this.playerCamera.fieldOfView, this.defaultFOV, 0.1f));
+        }
         this.cameraRotationY += Input.GetAxis("Mouse X") * this.Sensibility;
         this.cameraRotationX += Input.GetAxis("Mouse Y") * -1 * this.Sensibility;
 
         if (this.cameraRotationX > 90f) this.cameraRotationX = 90f;
         else if (this.cameraRotationX < -90f) this.cameraRotationX = -90f;
 
-        // Si está dentro de un carro, no puede girar tanto por estar sentado
+        // Si estï¿½ dentro de un carro, no puede girar tanto por estar sentado
         if(this.isInCar)
         {
             if (this.cameraRotationY > this.maxCameraYCar) this.cameraRotationY = this.maxCameraYCar;
@@ -102,15 +124,21 @@ public class PlayerController : MonoBehaviour
     public void toggleInsideCar()
     {
         this.isInCar = !this.isInCar;
-        this.toggleRaycast();
+        this.toggleEntranceLayer();
         this.toggleCharacterController();
     }
 
-    private void toggleRaycast()
+    private void toggleEntranceLayer()
     {
-        CameraController raycast = this.GetComponentInChildren<CameraController>();
-
-        raycast.enabled = !raycast.enabled;
+        GameObject entrance = Helper.FindChildByTag(GameObject.FindGameObjectWithTag("UsableCar").transform.Find("Body").transform, "CarEntrance");
+        
+        if (this.isInCar)
+        {
+            entrance.layer = 0; // DEFAULT
+        } else
+        {
+            entrance.layer = 3; // INTERACTABLE LAYER
+        }
     }
 
     private void toggleCharacterController()
@@ -143,5 +171,18 @@ public class PlayerController : MonoBehaviour
         this.pilotDoor = null;
 
         this.toggleInsideCar(); // Volver a darle el control al jugador
+    }
+
+    protected IEnumerator changeFOV(float from, float to, float delay)
+    {
+        float timeElapsed = 0f;
+
+        while (timeElapsed < delay)
+        {
+            this.playerCamera.fieldOfView = Mathf.Lerp(from, to, timeElapsed / delay);
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
+        }
     }
 }

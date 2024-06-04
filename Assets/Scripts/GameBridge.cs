@@ -8,7 +8,7 @@ public class GameBridge : MonoBehaviour
     void Awake()
     {
         // TODO: Revisar si debe ver el tutorial o no
-        SceneManager manager = SceneManager.getManager();
+        SceneManagerControl manager = SceneManagerControl.getManager();
         manager.SceneSelector("Tutorial");
     }
 }
