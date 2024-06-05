@@ -38,6 +38,7 @@ public class SettingsInit : MonoBehaviour
         
         GameObject.Find("Canvas/PanelControles/PanelVista/Button (7)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.Zoom).ToString();
         GameObject.Find("Canvas/PanelControles/PanelVista/Button (8)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.Horn).ToString();
+        GameObject.Find("Canvas/PanelControles/PanelVista").GetComponentInChildren<TMPro.TMP_InputField>().text = profile.getSettings().getSetting(Settings.SettingName.CameraSens).ToString();
 
         // menu graficos |||| Apartir de aqui no se puede acceder con Gameobject.Find
 
