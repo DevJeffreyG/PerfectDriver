@@ -33,7 +33,7 @@ public class ProfileController : MonoBehaviour
         globalFileWorker();
 
         // Buscar todos los perfiles existentes en el path
-        FileInfo[] profileFiles = dir.GetFiles().OrderByDescending(x => x.Name).Reverse().ToArray();
+        FileInfo[] profileFiles = dir.GetFiles().OrderByDescending(x => Int32.Parse(x.Name.Replace(".txt", ""))).Reverse().ToArray();
 
         Debug.Log("Hay "+ profileFiles.Length + " perfiles guardados");
 
