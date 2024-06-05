@@ -179,6 +179,7 @@ public class Settings
 
         foreach(object value in settingsMap.Values)
         {
+            
             writer.WriteLine(value);
         }
 
@@ -190,10 +191,29 @@ public class Settings
         return settingsMap[name];
     }
 
-    public void setSetting(SettingName name, KeyCode code)
+    public void setSetting(SettingName name, KeyCode code, out bool problem)
     {
         settingsMap[name] = code;
-        this.saveFile();
+        problem = false;
+
+        List<KeyCode> keys = new List<KeyCode>();
+        foreach (var key in settingsMap.Values)
+        {
+            if(key.GetType() == typeof(KeyCode))
+            {
+                if(!keys.Contains((KeyCode)key))
+                {
+                    keys.Add((KeyCode)key);
+                } else
+                {
+                    problem = true;
+                    break;
+                }
+                
+            }
+        }
+
+        if(!problem) this.saveFile();
     }
 
     public void setSetting(SettingName name, float value)
