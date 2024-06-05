@@ -8,12 +8,18 @@ using UnityEngine;
 
 public class ProfileController : MonoBehaviour
 {
+    private static ProfileController instance;
     private static Profile profile;
     private static int LastId = 0;
     private static bool loadedLastProfile = false;
     
     private FileInfo globalFile;
     private DoubleCircularList profiles = new DoubleCircularList();
+
+    public static ProfileController getInstance()
+    {
+        return instance;
+    }
 
     public static Profile getProfile()
     {
@@ -28,12 +34,23 @@ public class ProfileController : MonoBehaviour
 
     void Awake()
     {
+        instance = this;
         Directory.CreateDirectory(Paths.SETTINGS_PATH);
         DirectoryInfo dir = Directory.CreateDirectory(Paths.PROFILE_PATH);
         globalFileWorker();
 
         // Buscar todos los perfiles existentes en el path
-        FileInfo[] profileFiles = dir.GetFiles().OrderByDescending(x => Int32.Parse(x.Name.Replace(".txt", ""))).Reverse().ToArray();
+        FileInfo[] profileFiles;
+        try
+        {
+            profileFiles = dir.GetFiles().OrderByDescending(x => Int32.Parse(x.Name.Replace(".txt", ""))).Reverse().ToArray();
+        }
+        catch (Exception)
+        {
+            profileFiles = dir.GetFiles().OrderByDescending(x => x.Name.Replace(".txt", "")).Reverse().ToArray(); 
+            Debug.Log("Hubo un error ordenando los perfiles, probablemente estarán desordenados");
+        }
+
 
         Debug.Log("Hay "+ profileFiles.Length + " perfiles guardados");
 
@@ -78,11 +95,7 @@ public class ProfileController : MonoBehaviour
             profile = (Profile) this.profiles.getPointer().getData();
             Debug.Log("El perfil en uso ya no es nulo");
             loadedLastProfile = true;
-        }
-        
-        GameObject profileSelected = GameObject.Find("ProfileSelected");
-        if(profileSelected != null) profileSelected.GetComponent<TMP_Text>().text = profile.getName();
-        
+        }               
     }
 
     public void createProfile()
