@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class Parsers
@@ -20,5 +21,10 @@ public abstract class Parsers
     public static float parseFloat(StreamReader r)
     {
         return float.Parse(r.ReadLine(), CultureInfo.InvariantCulture.NumberFormat);
+    }
+
+    public static bool parseBool(StreamReader r)
+    {
+        return bool.Parse(r.ReadLine());
     }
 }
