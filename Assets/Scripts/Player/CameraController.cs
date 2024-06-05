@@ -10,10 +10,19 @@ public class CameraController : MonoBehaviour
     [SerializeField] private LayerMask mask;
     private List<GameObject> active = new List<GameObject>();
     private GameObject obj;
+    private Settings settings;
+    private Camera playerCamera;
+
+    private void Start()
+    {
+        this.playerCamera = GetComponent<Camera>();
+        this.settings = ProfileController.getProfile().getSettings();
+    }
 
     // Update is called once per frame
     void Update()
     {
+        playerCamera.farClipPlane = (float) settings.getSetting(Settings.SettingName.CameraDistance);
 
         if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, Mathf.Infinity, mask))
         {

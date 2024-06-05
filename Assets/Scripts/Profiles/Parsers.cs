@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using UnityEngine;
 
@@ -18,6 +19,6 @@ public abstract class Parsers
 
     public static float parseFloat(StreamReader r)
     {
-        return float.Parse(r.ReadLine());
+        return float.Parse(r.ReadLine(), CultureInfo.InvariantCulture.NumberFormat);
     }
 }
