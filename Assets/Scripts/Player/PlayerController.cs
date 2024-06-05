@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        characterController.detectCollisions = false;
         this.playerSettings = ProfileController.getProfile().getSettings();
         this.Sensibility = (float) this.playerSettings.getSetting(Settings.SettingName.CameraSens);
 
