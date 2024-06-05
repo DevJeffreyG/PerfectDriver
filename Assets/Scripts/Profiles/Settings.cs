@@ -30,13 +30,16 @@ public class Settings
 
     public static readonly float D_CAMERA_SENS = 5f;
     public static readonly int D_MAX_FPS = 120;
+    public static readonly float D_CAMERA_DISTANCE = 1000f;
+    public static readonly float D_SFX_VOLUME = 1f;
+    public static readonly float D_BG_VOLUME = 1f;
 
     private FileInfo file;
 
     public enum SettingName
     {
         Accelerate, Left, Brake, Right, Jump, Interact, DirectionalRight, DirectionalLeft, ToggleEngine, ToggleHandbrake, ToggleLights, CameraSens, MaxFPS,
-        GearUp, GearDown, StabilizeSteerWheel, FasterSteering, Zoom, Horn, EmergencyLights
+        GearUp, GearDown, StabilizeSteerWheel, FasterSteering, Zoom, Horn, EmergencyLights, CameraDistance, SFX_Volume, BG_Volume
     }
 
     private Dictionary<SettingName, object> defaultSettings, settingsMap;
@@ -79,6 +82,10 @@ public class Settings
 
         map.Add(SettingName.CameraSens, D_CAMERA_SENS);
         map.Add(SettingName.MaxFPS, D_MAX_FPS);
+
+        map.Add(SettingName.CameraDistance, D_CAMERA_DISTANCE);
+        map.Add(SettingName.SFX_Volume, D_SFX_VOLUME);
+        map.Add(SettingName.BG_Volume, D_BG_VOLUME);
     }
 
     private void readFile()
