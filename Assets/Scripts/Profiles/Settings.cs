@@ -199,6 +199,11 @@ public class Settings
         settingsMap[name] = value;
         this.saveFile();
     }
+    public void setSetting(SettingName name, bool value)
+    {
+        settingsMap[name] = value;
+        this.saveFile();
+    }
 
     public bool Holding(Settings.SettingName name)
     {
