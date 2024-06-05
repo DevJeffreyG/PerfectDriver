@@ -101,15 +101,15 @@ public class Settings
 
                     if (type == typeof(KeyCode))
                     {
-                        settingsMap[entry.Key] = parseKeyCode(reader);
+                        settingsMap[entry.Key] = Parsers.parseKeyCode(reader);
                     }
                     else if (type == typeof(int))
                     {
-                        settingsMap[entry.Key] = parseInt(reader);
+                        settingsMap[entry.Key] = Parsers.parseInt(reader);
                     }
                     else if (type == typeof(float))
                     {
-                        settingsMap[entry.Key] = parseFloat(reader);
+                        settingsMap[entry.Key] = Parsers.parseFloat(reader);
                     }
                     else
                     {
@@ -151,22 +151,7 @@ public class Settings
         }
 
         writer.Close();
-    }
-
-    private KeyCode parseKeyCode(StreamReader r)
-    {
-        return (KeyCode) Enum.Parse(typeof(KeyCode), r.ReadLine());
-    }
-
-    private int parseInt(StreamReader r)
-    {
-        return int.Parse(r.ReadLine());
-    }
-
-    private float parseFloat(StreamReader r)
-    {
-        return float.Parse(r.ReadLine());
-    }
+    }    
 
     public object getSetting(SettingName name)
     {
