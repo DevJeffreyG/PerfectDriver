@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SettingsInit : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class SettingsInit : MonoBehaviour
     void Start()
     {
         Profile profile = ProfileController.getProfile();
-
+        
         // Luces
 
         GameObject.Find("Canvas/PanelControles/PanelLuces/Button (5)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.DirectionalRight).ToString();
@@ -40,6 +41,15 @@ public class SettingsInit : MonoBehaviour
         GameObject.Find("Canvas/PanelControles/PanelVista/Button (8)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.Horn).ToString();
         GameObject.Find("Canvas/PanelControles/PanelVista").GetComponentInChildren<TMPro.TMP_InputField>().text = profile.getSettings().getSetting(Settings.SettingName.CameraSens).ToString();
 
+        // camara
+
+        GameObject.Find("Canvas/PanelControles/PanelCamaraMov/Button (5)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.UpCam).ToString();
+        GameObject.Find("Canvas/PanelControles/PanelCamaraMov/Button (6)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.DownCam).ToString();
+        GameObject.Find("Canvas/PanelControles/PanelCamaraMov/Button (7)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.LeftCam).ToString();
+        GameObject.Find("Canvas/PanelControles/PanelCamaraMov/Button (8)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.RightCam).ToString();
+        GameObject.Find("Canvas/PanelControles/PanelCamaraMov").SetActive((bool) profile.getSettings().getSetting(Settings.SettingName.OnlyKeyboard));
+        
+
         // menu graficos |||| Apartir de aqui no se puede acceder con Gameobject.Find
 
         int i = 0;
@@ -52,5 +62,6 @@ public class SettingsInit : MonoBehaviour
             }
         }
         menusOcultos[0].GetComponentInChildren<TMPro.TMP_InputField>().text = ""+ProfileController.getProfile().getSettings().getSetting(Settings.SettingName.MaxFPS);
+        menusOcultos[2].GetComponentInChildren<Toggle>().isOn = (bool) profile.getSettings().getSetting(Settings.SettingName.OnlyKeyboard);
     }
 }
