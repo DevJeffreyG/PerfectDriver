@@ -92,6 +92,16 @@ public class PlayerController : MonoBehaviour
 
     private void cameraManager()
     {
+        float xAxis = Input.GetAxis("Mouse X");
+        float yAxis = Input.GetAxis("Mouse Y");
+
+        if ((bool) this.playerSettings.getSetting(Settings.SettingName.OnlyKeyboard))
+        {
+            Debug.Log("Just Keyboard");
+            xAxis = this.playerSettings.Holding(Settings.SettingName.RightCam) ? 1 : this.playerSettings.Holding(Settings.SettingName.LeftCam) ? - 1 : 0;
+            yAxis = this.playerSettings.Holding(Settings.SettingName.UpCam) ? 1 : this.playerSettings.Holding(Settings.SettingName.DownCam) ? - 1 : 0;
+        }
+
         if (this.playerSettings.Down(Settings.SettingName.Zoom))
         {
             StopAllCoroutines();
@@ -101,8 +111,8 @@ public class PlayerController : MonoBehaviour
             StopAllCoroutines();
             StartCoroutine(changeFOV(this.playerCamera.fieldOfView, this.defaultFOV, 0.1f));
         }
-        this.cameraRotationY += Input.GetAxis("Mouse X") * this.Sensibility;
-        this.cameraRotationX += Input.GetAxis("Mouse Y") * -1 * this.Sensibility;
+        this.cameraRotationY += xAxis * this.Sensibility;
+        this.cameraRotationX += yAxis * -1 * this.Sensibility;
 
         if (this.cameraRotationX > 90f) this.cameraRotationX = 90f;
         else if (this.cameraRotationX < -90f) this.cameraRotationX = -90f;
