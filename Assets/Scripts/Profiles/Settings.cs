@@ -34,12 +34,19 @@ public class Settings
     public static readonly float D_SFX_VOLUME = 1f;
     public static readonly float D_BG_VOLUME = 1f;
 
+    public static readonly bool D_ONLY_KEYBOARD = false;
+    public static readonly KeyCode D_UP_CAM = KeyCode.UpArrow;
+    public static readonly KeyCode D_LEFT_CAM = KeyCode.LeftArrow;
+    public static readonly KeyCode D_DOWN_CAM = KeyCode.DownArrow;
+    public static readonly KeyCode D_RIGHT_CAM = KeyCode.RightArrow;
+
     private FileInfo file;
 
     public enum SettingName
     {
         Accelerate, Left, Brake, Right, Jump, Interact, DirectionalRight, DirectionalLeft, ToggleEngine, ToggleHandbrake, ToggleLights, CameraSens, MaxFPS,
-        GearUp, GearDown, StabilizeSteerWheel, FasterSteering, Zoom, Horn, EmergencyLights, CameraDistance, SFX_Volume, BG_Volume
+        GearUp, GearDown, StabilizeSteerWheel, FasterSteering, Zoom, Horn, EmergencyLights, CameraDistance, SFX_Volume, BG_Volume, OnlyKeyboard, UpCam,
+        LeftCam, DownCam, RightCam
     }
 
     private Dictionary<SettingName, object> defaultSettings, settingsMap;
@@ -83,6 +90,12 @@ public class Settings
         map.Add(SettingName.CameraSens, D_CAMERA_SENS);
         map.Add(SettingName.MaxFPS, D_MAX_FPS);
 
+        map.Add(SettingName.OnlyKeyboard, D_ONLY_KEYBOARD);
+        map.Add(SettingName.UpCam, D_UP_CAM);
+        map.Add(SettingName.LeftCam, D_LEFT_CAM);
+        map.Add(SettingName.DownCam, D_DOWN_CAM);
+        map.Add(SettingName.RightCam, D_RIGHT_CAM);
+
         map.Add(SettingName.CameraDistance, D_CAMERA_DISTANCE);
         map.Add(SettingName.SFX_Volume, D_SFX_VOLUME);
         map.Add(SettingName.BG_Volume, D_BG_VOLUME);
@@ -117,6 +130,10 @@ public class Settings
                     else if (type == typeof(float))
                     {
                         settingsMap[entry.Key] = Parsers.parseFloat(reader);
+                    }
+                    else if(type == typeof(bool))
+                    {
+                        settingsMap[entry.Key] = Parsers.parseBool(reader);
                     }
                     else
                     {
