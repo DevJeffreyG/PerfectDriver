@@ -18,7 +18,7 @@ public class ColaScript : MonoBehaviour
 
         // Recorre todos los hijos del Canvas // los unicos elementos desactivados hijos directos de Canvas son los paneles de video audio... 
         int i = 1;
-        foreach (Transform hijo in GameObject.Find("Canvas").transform)
+        foreach (Transform hijo in GameObject.Find("Canvas").transform) 
         {
             // Verifica si el hijo está desactivado
             if (!hijo.gameObject.activeSelf) {
