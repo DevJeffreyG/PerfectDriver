@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour
             this.CurrentYSpeed = 0f;
 
             // Si est� saltando
-            if (this.playerSettings.Down(Settings.SettingName.Jump))
+            if (this.playerSettings.Down(Settings.SettingName.ToggleHandbrake))
             {
                 this.CurrentYSpeed = this.JumpSpeed;
             }

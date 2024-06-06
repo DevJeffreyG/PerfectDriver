@@ -25,15 +25,14 @@ public class SettingsInit : MonoBehaviour
         GameObject.Find("Canvas/PanelControles/PanelMovimiento/Button (4)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.Left).ToString();
         GameObject.Find("Canvas/PanelControles/PanelMovimiento/Button (5)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.GearUp).ToString();
         GameObject.Find("Canvas/PanelControles/PanelMovimiento/Button (6)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.GearDown).ToString();
-        GameObject.Find("Canvas/PanelControles/PanelMovimiento/Button (7)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.StabilizeSteerWheel).ToString();
-        GameObject.Find("Canvas/PanelControles/PanelMovimiento/Button (8)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.FasterSteering).ToString();
+        GameObject.Find("Canvas/PanelControles/PanelMovimiento/Button (7)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.StabilizeSteerWheel).ToString();        
 
         // Basico
 
         GameObject.Find("Canvas/PanelControles/PanelBasico/Button (5)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.ToggleEngine).ToString();
         GameObject.Find("Canvas/PanelControles/PanelBasico/Button (6)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.ToggleHandbrake).ToString();
         GameObject.Find("Canvas/PanelControles/PanelBasico/Button (7)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.Interact).ToString();
-        GameObject.Find("Canvas/PanelControles/PanelBasico/Button (8)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.Jump).ToString();
+        GameObject.Find("Canvas/PanelControles/PanelBasico/Button (8)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.ToggleHandbrake).ToString();
 
         // vista
         

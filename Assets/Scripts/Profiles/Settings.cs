@@ -12,7 +12,6 @@ public class Settings
     public static readonly KeyCode D_LEFT = KeyCode.A;
     public static readonly KeyCode D_BRAKE = KeyCode.S;
     public static readonly KeyCode D_RIGHT = KeyCode.D;
-    public static readonly KeyCode D_JUMP = KeyCode.Space;
     public static readonly KeyCode D_INTERACT = KeyCode.F;
     public static readonly KeyCode D_ZOOM = KeyCode.Mouse1;
     
@@ -75,7 +74,6 @@ public class Settings
         map.Add(SettingName.Left, D_LEFT);
         map.Add(SettingName.Brake, D_BRAKE);
         map.Add(SettingName.Right, D_RIGHT);
-        map.Add(SettingName.Jump, D_JUMP);
         map.Add(SettingName.Interact, D_INTERACT);
         map.Add(SettingName.Zoom, D_ZOOM);
 
@@ -179,6 +177,7 @@ public class Settings
 
         foreach(object value in settingsMap.Values)
         {
+            
             writer.WriteLine(value);
         }
 
@@ -190,10 +189,29 @@ public class Settings
         return settingsMap[name];
     }
 
-    public void setSetting(SettingName name, KeyCode code)
+    public void setSetting(SettingName name, KeyCode code, out bool problem)
     {
         settingsMap[name] = code;
-        this.saveFile();
+        problem = false;
+
+        List<KeyCode> keys = new List<KeyCode>();
+        foreach (var key in settingsMap.Values)
+        {
+            if(key.GetType() == typeof(KeyCode))
+            {
+                if(!keys.Contains((KeyCode)key))
+                {
+                    keys.Add((KeyCode)key);
+                } else
+                {
+                    problem = true;
+                    break;
+                }
+                
+            }
+        }
+
+        if(!problem) this.saveFile();
     }
 
     public void setSetting(SettingName name, float value)
