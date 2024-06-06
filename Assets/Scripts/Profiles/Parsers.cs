@@ -20,7 +20,7 @@ public abstract class Parsers
 
     public static float parseFloat(StreamReader r)
     {
-        return float.Parse(r.ReadLine(), CultureInfo.InvariantCulture.NumberFormat);
+        return float.Parse(r.ReadLine().Replace(",", "."), CultureInfo.InvariantCulture.NumberFormat);
     }
 
     public static bool parseBool(StreamReader r)
