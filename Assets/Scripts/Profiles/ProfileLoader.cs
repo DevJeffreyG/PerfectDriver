@@ -7,6 +7,7 @@ public class ProfileLoader : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text points;
     [SerializeField] private TMPro.TMP_Text times;
     private ProfileController profileController;
+    private Profile selected;
     private void Start()
     {
         profileController = ProfileController.getInstance();
@@ -20,7 +21,7 @@ public class ProfileLoader : MonoBehaviour
     }
 
     public void nextProfile()
-    {
+    {        
         profileController.nextProfile();
     }
 

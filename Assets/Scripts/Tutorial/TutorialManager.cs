@@ -17,8 +17,10 @@ public class TutorialManager : MonoBehaviour
 
     void Update()
     {
-        if ((bool)profile.getData(Profile.ProfileData.CompletedTutorial))
+        if ((bool) profile.getData(Profile.ProfileData.CompletedTutorial))
         {
+            Debug.Log("Completó el tutorial");
+            Debug.Log(profile.getName());
             Destroy(gameObject);
             return;
         }
