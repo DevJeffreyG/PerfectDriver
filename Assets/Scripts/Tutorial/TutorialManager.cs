@@ -7,9 +7,22 @@ public class TutorialManager : MonoBehaviour
 {
     public GameObject[] popUps;
     private int popUpIndex;
+    private bool ended = false;
+    private Profile profile;
+
+    private void Start()
+    {
+        profile = ProfileController.getProfile();
+    }
 
     void Update()
     {
+        if ((bool)profile.getData(Profile.ProfileData.CompletedTutorial))
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         for (int i = 0; i < popUps.Length; i++)
         {
             if (i == popUpIndex)
@@ -66,7 +79,14 @@ public class TutorialManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
             {
                 popUpIndex++;
+                ended = true;
             }
+        }
+
+        if(ended)
+        {
+            ProfileController.getProfile().setData(Profile.ProfileData.CompletedTutorial, true);
+            Destroy(gameObject);
         }
     }
  }

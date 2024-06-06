@@ -29,7 +29,7 @@ public class Profile
         map.Add(ProfileData.SettingsPath, "");
         map.Add(ProfileData.MaxPoints, 0);
         map.Add(ProfileData.TimesPlayed, 0);
-        map.Add(ProfileData.CompletedTutorial, 0);
+        map.Add(ProfileData.CompletedTutorial, false);
     }
 
     private void setDefaults()
@@ -127,6 +127,12 @@ public class Profile
         this.saveFile();
     }
 
+    public void setData(ProfileData name, bool value)
+    {
+        data[name] = value;
+        this.saveFile();
+    }
+
     public void changeName(String newName)
     {
         this.setData(ProfileData.Name, newName);
@@ -177,7 +183,11 @@ public class Profile
                 foreach (var entry in data.ToList())
                 {
                     Type type = entry.Value.GetType();
-                    
+
+                    if (type == typeof(bool))
+                    {
+                        data[entry.Key] = Parsers.parseBool(reader);
+                    }else
                     if (type == typeof(int))
                     {
                         data[entry.Key] = Parsers.parseInt(reader);
