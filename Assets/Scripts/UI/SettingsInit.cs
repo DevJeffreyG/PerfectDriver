@@ -32,7 +32,6 @@ public class SettingsInit : MonoBehaviour
         GameObject.Find("Canvas/PanelControles/PanelBasico/Button (5)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.ToggleEngine).ToString();
         GameObject.Find("Canvas/PanelControles/PanelBasico/Button (6)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.ToggleHandbrake).ToString();
         GameObject.Find("Canvas/PanelControles/PanelBasico/Button (7)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.Interact).ToString();
-        GameObject.Find("Canvas/PanelControles/PanelBasico/Button (8)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.ToggleHandbrake).ToString();
 
         // vista
         
