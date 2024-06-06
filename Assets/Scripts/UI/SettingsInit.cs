@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class SettingsInit : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         Profile profile = ProfileController.getProfile();
         
