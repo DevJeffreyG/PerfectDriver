@@ -25,6 +25,7 @@ public class ProfileController : MonoBehaviour
     {
         if (profile == null && !loadedLastProfile)
         {
+            Debug.Log("Debugging");
             // Esto sólo debería pasar cuando se carga una escena de primero que NO es el MainMenu (donde está el iniciador de ProfileController)
             profile = new Profile("Perfil predeterminado", LastId.ToString());
         }        
@@ -66,7 +67,7 @@ public class ProfileController : MonoBehaviour
             LastId++;
         }
 
-        profile = (Profile) this.profiles.getPointer().getData();
+        if(!loadedLastProfile) profile = (Profile) this.profiles.getPointer().getData();
     }
 
     void Update()
