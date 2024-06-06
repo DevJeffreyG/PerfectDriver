@@ -163,6 +163,10 @@ public class Settings
         }
     }
 
+    public void resetSettings(){
+        setDefaults();
+        saveFile();
+    }
     private void setDefaults()
     {
         foreach(var entry in defaultSettings)
