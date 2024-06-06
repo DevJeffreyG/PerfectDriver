@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -91,8 +92,11 @@ public class CarController : MonoBehaviour
 
     private Settings playerSettings;
 
+    private List<SoundManager> soundsPlayingBeforePause;
+
     void Start()
     {
+        soundsPlayingBeforePause = new List<SoundManager>();
         // Direccionales
         leftTimer = leftTimer2 = rightTimer = rightTimer2 = emergencyTimer = emergencyTimer2 = indicatorsEvery;
         
@@ -166,6 +170,33 @@ public class CarController : MonoBehaviour
 
     private void Update()
     {
+        if (PauseManager.isPaused) {
+            foreach (Transform child in sounds.transform)
+            {
+                SoundManager sound = child.GetComponent<SoundManager>();
+                if (sound != null && sound.getSource().isPlaying)
+                {
+                    soundsPlayingBeforePause.Add(sound);
+                    sound.Stop();
+                }
+            }
+
+            return;
+        }
+
+        if (soundsPlayingBeforePause.Count > 0)
+        {
+            foreach(SoundManager sound in soundsPlayingBeforePause)
+            {
+                if(sound.GetType() == typeof(LoopSound))
+                {
+                    sound.Play();
+                }
+            }
+
+            soundsPlayingBeforePause = new List<SoundManager>();
+        }
+
         this.movementManager();
         this.keybindsManager();
         this.animationManager();
