@@ -10,8 +10,6 @@ public class SetFps : MonoBehaviour
     public void Fps(){
         if (Int32.TryParse(textArea.text, out int r) && r > 0){
             ProfileController.getProfile().getSettings().setSetting(Settings.SettingName.MaxFPS, r);
-        } else {
-            textArea.text = "Solo numeros!";
         }
     }
 }
