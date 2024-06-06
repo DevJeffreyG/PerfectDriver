@@ -24,9 +24,17 @@ public class SettingsEditControl : MonoBehaviour
                 storedKey = GetPressedKey();
                 enabled = false;
                 init = false;
-                txt.text = storedKey.ToString();
+                
                 Settings.SettingName r = (Settings.SettingName) Enum.Parse(typeof(Settings.SettingName), control);
-                ProfileController.getProfile().getSettings().setSetting(r, storedKey);
+                ProfileController.getProfile().getSettings().setSetting(r, storedKey, out bool problem);
+                if (!problem)
+                {
+                    txt.text = storedKey.ToString();
+                } else
+                {
+                    // TODO: NO SE CAMBIÓ EL CONTROL
+                }
+                
                 GameObject.Find("Canvas/PanelControles/PanelEspera").SetActive(false);
             } else {
                 GameObject.Find("Canvas/PanelControles/PanelEspera").SetActive(true);

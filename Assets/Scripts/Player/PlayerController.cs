@@ -36,8 +36,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (PauseManager.isPaused) return;
+        
         this.cameraManager();
-        this.movementManager();
+        this.movementManager();       
     }
 
     public static GameObject getPlayerObject()
@@ -77,7 +79,7 @@ public class PlayerController : MonoBehaviour
             this.CurrentYSpeed = 0f;
 
             // Si est� saltando
-            if (this.playerSettings.Down(Settings.SettingName.Jump))
+            if (this.playerSettings.Down(Settings.SettingName.ToggleHandbrake))
             {
                 this.CurrentYSpeed = this.JumpSpeed;
             }
