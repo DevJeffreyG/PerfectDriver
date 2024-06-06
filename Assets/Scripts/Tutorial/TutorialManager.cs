@@ -10,15 +10,19 @@ public class TutorialManager : MonoBehaviour
 
     void Update()
     {
-        for (int i = 0; i < popUps.Length; i++) {
-            if (i == popUpIndex) {
+        for (int i = 0; i < popUps.Length; i++)
+        {
+            if (i == popUpIndex)
+            {
 
                 popUps[i].SetActive(true);
 
-            } else {
-                
+            }
+            else
+            {
+
                 popUps[i].SetActive(false);
-            
+
             }
         }
 
@@ -51,6 +55,13 @@ public class TutorialManager : MonoBehaviour
             }
         }
         else if (popUpIndex == 4)
+        {
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
+            {
+                popUpIndex++;
+            }
+        }
+        else if (popUpIndex == 5)
         {
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
             {
