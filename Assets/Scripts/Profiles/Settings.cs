@@ -14,7 +14,8 @@ public class Settings
     public static readonly KeyCode D_RIGHT = KeyCode.D;
     public static readonly KeyCode D_INTERACT = KeyCode.F;
     public static readonly KeyCode D_ZOOM = KeyCode.Mouse1;
-    
+    public static readonly KeyCode D_BACK = KeyCode.Escape;
+
     public static readonly KeyCode D_DIRECTIONAL_RIGHT = KeyCode.E;
     public static readonly KeyCode D_DIRECTIONAL_LEFT = KeyCode.Q;
     public static readonly KeyCode D_TOGGLE_ENGINE = KeyCode.R;
@@ -49,7 +50,7 @@ public class Settings
     {
         Accelerate, Left, Brake, Right, Jump, Interact, DirectionalRight, DirectionalLeft, ToggleEngine, ToggleHandbrake, ToggleLights, CameraSens, MaxFPS,
         GearUp, GearDown, StabilizeSteerWheel, FasterSteering, Zoom, Horn, EmergencyLights, CameraDistance, SFX_Volume, BG_Volume, OnlyKeyboard, UpCam,
-        LeftCam, DownCam, RightCam, ShowHouses, ShowTrees, TreesRenderDistance
+        LeftCam, DownCam, RightCam, ShowHouses, ShowTrees, TreesRenderDistance, Back
     }
 
     private Dictionary<SettingName, object> defaultSettings, settingsMap;
@@ -76,6 +77,7 @@ public class Settings
         map.Add(SettingName.Right, D_RIGHT);
         map.Add(SettingName.Interact, D_INTERACT);
         map.Add(SettingName.Zoom, D_ZOOM);
+        map.Add(SettingName.Back, D_BACK);
 
         map.Add(SettingName.DirectionalRight, D_DIRECTIONAL_RIGHT);
         map.Add(SettingName.DirectionalLeft, D_DIRECTIONAL_LEFT);

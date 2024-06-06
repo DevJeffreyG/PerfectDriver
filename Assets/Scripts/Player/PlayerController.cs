@@ -36,8 +36,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (PauseManager.isPaused) return;
+        
         this.cameraManager();
-        this.movementManager();
+        this.movementManager();       
     }
 
     public static GameObject getPlayerObject()

@@ -31,6 +31,7 @@ public class TimerController : MonoBehaviour
     private void ChangeTimer()
     {
        CurrentTime -= Time.deltaTime;
+        Debug.Log(CurrentTime);
 
         if (CurrentTime <= 0)
         {
