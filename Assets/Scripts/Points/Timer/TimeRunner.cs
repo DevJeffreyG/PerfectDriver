@@ -8,9 +8,11 @@ public class TimeRunner : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("UsableCar"))    
+        Debug.Log(other.tag);
+        if (other.CompareTag("CarCollider"))    
         {
-            timerController.ActivateTempo();        
+            timerController.ActivateTempo();
+            Debug.Log("entró");
         }
     }
 }
