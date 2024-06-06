@@ -4,6 +4,8 @@ using UnityEngine;
 public class ProfileLoader : MonoBehaviour
 {
     [SerializeField] private GameObject selectedProfile;
+    [SerializeField] private TMPro.TMP_Text points;
+    [SerializeField] private TMPro.TMP_Text times;
     private ProfileController profileController;
     private void Start()
     {
@@ -13,6 +15,8 @@ public class ProfileLoader : MonoBehaviour
     private void Update()
     {
         selectedProfile.GetComponent<TMP_Text>().text = ProfileController.getProfile().getName();
+        points.text = ""+ProfileController.getProfile().getData(Profile.ProfileData.MaxPoints);
+        times.text = ""+ProfileController.getProfile().getData(Profile.ProfileData.TimesPlayed);
     }
 
     public void nextProfile()
