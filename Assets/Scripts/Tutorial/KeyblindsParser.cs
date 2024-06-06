@@ -19,24 +19,23 @@ public class KeyblindsParser : MonoBehaviour
         Text = GetComponent<TMP_Text>();
 
         MatchCollection collection = pattern.Matches(Text.text);
-        //  MatchCollection collection = pattern.Matches(Text.text).ToString().Replace("[", "").Replace("]", "");
 
         foreach (Match match in collection)
         {
             GroupCollection groups = match.Groups;
-            Debug.Log(groups["word"].Value);
-            Debug.Log(groups[0]);
-            Debug.Log(groups[1]);
+
+            identifier = match.ToString().Replace("[", "").Replace("]", "");
+
+            Settings.SettingName settingName = (Settings.SettingName)Enum.Parse(typeof(Settings.SettingName), identifier);
+            Settings settings = ProfileController.getProfile().getSettings();
+
+            KeyCode key = (KeyCode)settings.getSetting(settingName);
+
+            newChar = pattern.Replace(Text.text, key.ToString(), 1);
+
+            Text.text = newChar;
         }
-        Settings.SettingName settingName = (Settings.SettingName)Enum.Parse(typeof(Settings.SettingName), "Right");
-        Settings settings = ProfileController.getProfile().getSettings();
-
-        KeyCode key = (KeyCode)settings.getSetting(settingName);
-
-        newChar = Regex.Replace(Text.text, @"\[(.*?)\]", key.ToString());
-
-        Text.text = newChar;
-        Debug.Log(key);
+        
     }
 
     
