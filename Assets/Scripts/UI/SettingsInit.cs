@@ -47,6 +47,7 @@ public class SettingsInit : MonoBehaviour
         GameObject.Find("Canvas/PanelControles/PanelCamaraMov/Button (8)").GetComponentInChildren<TMPro.TMP_Text>().text = profile.getSettings().getSetting(Settings.SettingName.RightCam).ToString();
         GameObject.Find("Canvas/PanelControles/PanelCamaraMov").SetActive((bool) profile.getSettings().getSetting(Settings.SettingName.OnlyKeyboard));
         
+        // alcanse de vision 
 
         // menu graficos |||| Apartir de aqui no se puede acceder con Gameobject.Find
 
@@ -61,5 +62,10 @@ public class SettingsInit : MonoBehaviour
         }
         menusOcultos[0].GetComponentInChildren<TMPro.TMP_InputField>().text = ""+ProfileController.getProfile().getSettings().getSetting(Settings.SettingName.MaxFPS);
         menusOcultos[2].GetComponentInChildren<Toggle>().isOn = (bool) profile.getSettings().getSetting(Settings.SettingName.OnlyKeyboard);
+        menusOcultos[0].GetComponentInChildren<Slider>().value = (float) profile.getSettings().getSetting(Settings.SettingName.CameraDistance);
+        //menusOcultos[0].GetComponentInChildren<Slider>().value = (float) profile.getSettings().getSetting(Settings.SettingName.CameraDistance);
+        Slider[] sonidoSliders = menusOcultos[1].GetComponentsInChildren<Slider>();
+        sonidoSliders[0].value = (float) profile.getSettings().getSetting(Settings.SettingName.BG_Volume);
+        sonidoSliders[1].value = (float) profile.getSettings().getSetting(Settings.SettingName.SFX_Volume);
     }
 }
