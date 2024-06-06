@@ -12,7 +12,10 @@ public class TimeRunner : MonoBehaviour
         if (other.CompareTag("CarCollider"))    
         {
             timerController.ActivateTempo();
-            Debug.Log("entró");
+            Debug.Log("entrï¿½");
         }
+    }
+    void Awake(){
+        timerController = GameObject.FindGameObjectWithTag("TimerManager").GetComponent<TimerController>();
     }
 }
