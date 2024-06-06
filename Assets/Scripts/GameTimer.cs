@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameTimer : MonoBehaviour
 {
-    private float time = 10;
+    private float time = 300;
     private GameObject pointManager;
     private Profile profile;
     private void Start()
