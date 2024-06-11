@@ -56,8 +56,10 @@ public class TimerController : MonoBehaviour
 
     public void DeactivateTempo()
     {
-        ChangeTempo(false);
-        objectPoints.GetComponent<Points>().points -= 50;
-     
+        if (this.TimeActivating)
+        {
+            ChangeTempo(false);
+            objectPoints.GetComponent<Points>().points -= 50;
+        }     
     }
 }

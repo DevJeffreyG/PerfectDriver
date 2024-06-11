@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Points : MonoBehaviour
 {
     public int points;
-    public Text textPoints;
+    public TMP_Text textPoints;
 
     private void Update()
     {
