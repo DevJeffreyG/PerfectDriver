@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class TimeEnder : MonoBehaviour
 {
-    [SerializeField] private TimerController timerController;
+    private TimerController timerController;
+
+    void Awake()
+    {
+        timerController = GameObject.FindGameObjectWithTag("TimerManager").GetComponent<TimerController>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("UsableCar"))
+        if (other.CompareTag("CarCollider"))
         {
             timerController.DeactivateTempo();
         }
