@@ -15,9 +15,11 @@ public class ProfileLoader : MonoBehaviour
 
     private void Update()
     {
-        selectedProfile.GetComponent<TMP_Text>().text = ProfileController.getProfile().getName();
-        points.text = ""+ProfileController.getProfile().getData(Profile.ProfileData.MaxPoints);
-        times.text = ""+ProfileController.getProfile().getData(Profile.ProfileData.TimesPlayed);
+        selected = ProfileController.getProfile();
+        
+        selectedProfile.GetComponent<TMP_Text>().text = selected.getName();
+        points.text = selected.getData(Profile.ProfileData.MaxPoints).ToString();
+        times.text = selected.getData(Profile.ProfileData.TimesPlayed).ToString();
     }
 
     public void nextProfile()
