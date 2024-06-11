@@ -17,13 +17,25 @@ public class DoubleCircularList
 
     public void DeletePointer()
     {
-        DoubleNode prev = this.pointer.getPrev();
-        DoubleNode next = this.pointer.getNext();
+        if (this.length == 2)
+        {
+            DoubleNode notPointerNode = this.pointer.getNext(); // Se elimina el Pointer, entonces se obtiene aquel que no es
+            notPointerNode.setPrev(notPointerNode);
+            notPointerNode.setNext(notPointerNode);
 
-        next.setPrev(prev);
-        prev.setNext(next);
+            this.head = notPointerNode;
+            this.tail = notPointerNode;
+            this.PointHead();
+        } else
+        {
+            DoubleNode prevOfPoint = this.pointer.getPrev();
+            DoubleNode nextOfPoint = this.pointer.getNext();
 
-        this.pointer = next;
+            prevOfPoint.setNext(nextOfPoint);
+            nextOfPoint.setPrev(prevOfPoint);
+            this.pointer = nextOfPoint;
+        }
+
         this.length--;
     }
 
@@ -40,14 +52,19 @@ public class DoubleCircularList
         } else
         {
             // Poniendolo de ultimo
-            DoubleNode node = this.tail;
-            DoubleNode newNode = new DoubleNode(data);
-            newNode.setNext(this.head);
-            node.setNext(newNode);
-            newNode.setPrev(node);
+            DoubleNode newTail = new DoubleNode(data);
+            DoubleNode lastTail = this.tail;
+            
+            // Nexts
+            newTail.setNext(this.head);
+            lastTail.setNext(newTail);
 
-            this.tail = newNode;
+            this.tail = newTail;
+
+            // Prevs
+            this.tail.setPrev(lastTail);
             this.head.setPrev(this.tail);
+
         }
 
         this.length++;

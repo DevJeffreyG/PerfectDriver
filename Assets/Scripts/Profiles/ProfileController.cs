@@ -22,7 +22,7 @@ public class ProfileController : MonoBehaviour
     }
 
     public static Profile getProfile()
-    {
+    {        
         if (profile == null && !loadedLastProfile)
         {
             Debug.Log("Debugging");
@@ -34,8 +34,7 @@ public class ProfileController : MonoBehaviour
     }
 
     void Awake()
-    {
-        instance = this;
+    {        
         Directory.CreateDirectory(Paths.SETTINGS_PATH);
         DirectoryInfo dir = Directory.CreateDirectory(Paths.PROFILE_PATH);
         globalFileWorker();
@@ -67,7 +66,10 @@ public class ProfileController : MonoBehaviour
             LastId++;
         }
 
-        if(!loadedLastProfile) profile = (Profile) this.profiles.getPointer().getData();
+        if (!loadedLastProfile)
+        {
+            profile = (Profile)this.profiles.getPointer().getData();
+        }
     }
 
     void Update()
@@ -96,7 +98,9 @@ public class ProfileController : MonoBehaviour
             profile = (Profile) this.profiles.getPointer().getData();
             Debug.Log("El perfil en uso ya no es nulo");
             loadedLastProfile = true;
-        }               
+
+            instance = this;
+        }
     }
 
     public void createProfile()
